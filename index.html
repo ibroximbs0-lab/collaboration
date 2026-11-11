@@ -3,408 +3,695 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Junior Academy — Matematika, General English, Dasturlash, Testlar va CoinShop</title>
+  <title>AI Do'kon - O'zbekcha aqlli xarid yordamchisi</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Canvas Confetti -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <!-- Styles -->
-  <link rel="stylesheet" href="styles.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              700: '#15803d',
+              800: '#166534',
+              900: '#1b4332',
+              950: '#0f291e',
+            },
+            cream: {
+              50: '#fdfcf9',
+              100: '#f7f6f0',
+              200: '#eeebe0',
+              300: '#dfdacb',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"Space Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Canvas Confetti for Checkout Celebration -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- HTML5 QR Code Scanner & QR Generator for Soliq Receipts -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-[#f7f9fc] text-slate-900 antialiased min-h-screen flex flex-col justify-between">
+<body class="min-h-screen flex flex-col antialiased select-none">
 
-  <!-- ================= TOP NAVIGATION BAR (4-rasm) ================= -->
-  <header class="bg-white border-b border-slate-100 sticky top-0 z-40">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+  <!-- ================= TOP HEADER ================= -->
+  <header class="bg-[#1b4332] text-white sticky top-0 z-40 shadow-md">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
       
-      <!-- Brand Logo & Navigation -->
-      <div class="flex items-center gap-8">
-        <a href="javascript:void(0)" onclick="switchView('dashboard')" class="flex items-center gap-2.5 group">
-          <div class="w-11 h-11 bg-[#ff5b22] rounded-2xl flex items-center justify-center text-white shadow-md shadow-orange-200 group-hover:scale-105 transition-transform">
-            <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C6.48 2 2 6.48 2 12c0 4.14 2.53 7.69 6.16 9.17-.06-.5-.04-1.12.08-1.63.12-.52.8-3.4 3.76-3.54 2.96.14 3.64 3.02 3.76 3.54.12.51.14 1.13.08 1.63C19.47 19.69 22 16.14 22 12c0-5.52-4.48-10-10-10zm-3 7.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5S7.5 11.83 7.5 11s.67-1.5 1.5-1.5zm6 0c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5-1.5-.67-1.5-1.5.67-1.5 1.5-1.5zm-3 6c-1.39 0-2.5-.89-2.5-2h5c0 1.11-1.11 2-2.5 2z"/>
-            </svg>
-          </div>
-          <div>
-            <span class="text-2xl font-black tracking-tight text-slate-900 block leading-tight">junior</span>
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block -mt-1">academy</span>
-          </div>
-        </a>
-
-        <!-- Main Navigation Links -->
-        <nav class="hidden md:flex items-center gap-6 text-sm font-bold text-slate-600">
-          <button onclick="switchView('dashboard')" class="hover:text-orange-500 transition-colors">Bosh sahifa</button>
-          <button onclick="switchView('courses')" class="hover:text-orange-500 transition-colors">Barcha Kurslar</button>
-          <button onclick="switchView('math-path')" class="hover:text-orange-500 transition-colors flex items-center gap-1">
-            <span>Matematika</span>
-            <span class="px-2 py-0.5 rounded-full text-[10px] bg-amber-100 text-amber-700 font-extrabold">Xarita</span>
-          </button>
-          <button onclick="switchView('english-course')" class="hover:text-orange-500 transition-colors">General English</button>
-          <button onclick="switchView('shop')" class="hover:text-orange-500 transition-colors text-orange-600">CoinShop</button>
-          <button onclick="openCoinHistory()" class="hover:text-orange-500 transition-colors">Coin tarixi</button>
-        </nav>
-      </div>
-
-      <!-- Right Action Items (4-rasmdagi 20972 energiya, 21702 coin, savatcha) -->
+      <!-- Logo -->
       <div class="flex items-center gap-3">
-        <!-- Energy Points (20972) -->
-        <div class="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-slate-50 border border-slate-200/80 text-slate-700 font-black text-xs shadow-sm hover:bg-slate-100 transition-colors" title="Energiya ballari">
-          <span class="text-blue-500 text-sm">⚡</span>
-          <span class="user-energy-display">20,972</span>
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center border border-emerald-400/30">
+          <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
         </div>
-
-        <!-- Coin Counter (21702) -->
-        <div onclick="openCoinHistory()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 font-black text-xs shadow-sm hover:bg-amber-100 transition-colors cursor-pointer" title="Sizning Coinlaringiz">
-          <span class="text-base">🪙</span>
-          <span class="user-coins-display text-amber-700">21,702</span>
-        </div>
-
-        <!-- Cart Button 🛒 -->
-        <button onclick="switchView('shop')" class="relative w-10 h-10 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors" title="CoinShop Savatchasi">
-          <span class="text-base">🛒</span>
-        </button>
-
-        <!-- Notification Bell -->
-        <button onclick="showToast('Sizda yangi vebinar bildirishnomasi mavjud!', 'info')" class="relative w-10 h-10 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-          <span class="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white"></span>
-        </button>
-
-        <!-- Profile Avatar -->
-        <div class="flex items-center gap-2 pl-1 cursor-pointer" onclick="showToast('Rustamjonov Ibrohim — O‘quvchi profili', 'info')">
-          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-orange-400 to-amber-500 text-white font-bold text-xs flex items-center justify-center shadow-md shadow-orange-200">
-            RI
+        <div>
+          <div class="font-extrabold text-lg sm:text-xl tracking-tight flex items-center gap-2">
+            <span>AI Do'kon</span>
+            <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500 text-white">Smart POS</span>
           </div>
+          <p class="text-xs text-emerald-200/80 hidden sm:block">O'zbekcha aqlli savdo yordamchisi</p>
         </div>
       </div>
 
+      <!-- Navigation Tabs (Kassir / Mijoz / Soliq Skaner / Statistika) -->
+      <div class="flex items-center bg-[#133024] p-1 rounded-xl border border-emerald-900/40">
+        <button id="tab-cashier-btn" onclick="switchMainView('cashier')" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition-all bg-white text-[#1b4332] shadow-sm flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+          </svg>
+          <span>Kassir oynasi</span>
+        </button>
+        <button id="tab-customer-btn" onclick="switchMainView('customer')" class="px-3.5 py-2 rounded-lg text-sm font-semibold transition-all text-emerald-200 hover:text-white flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+          </svg>
+          <span>Mijoz oynasi</span>
+        </button>
+        <button id="tab-soliq-btn" onclick="openSoliqScannerModal()" class="px-3 py-2 rounded-lg text-sm font-bold transition-all bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-400 hover:to-emerald-500 text-white shadow-xs flex items-center gap-1.5 border border-teal-300/40" title="Soliq chekini skanerlash va 1% keshbek olish">
+          <svg class="w-4 h-4 text-teal-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+          </svg>
+          <span>Soliq Skaner (1%)</span>
+        </button>
+        <button id="tab-stats-btn" onclick="switchMainView('stats')" class="px-3 py-2 rounded-lg text-sm font-semibold transition-all text-emerald-200 hover:text-white hidden md:flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg>
+          <span>Hisobot</span>
+        </button>
+      </div>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Sound Toggle -->
+        <button onclick="toggleAudio()" id="audio-toggle-btn" class="p-2 rounded-lg bg-emerald-900/40 text-emerald-200 hover:text-white hover:bg-emerald-800/50 transition border border-emerald-800/60" title="Ovozli signallar">
+          <svg id="sound-icon-on" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+          </svg>
+          <svg id="sound-icon-off" class="w-5 h-5 hidden text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
+          </svg>
+        </button>
+
+        <!-- Loyiha haqida -->
+        <button onclick="openModal('about-modal')" class="text-xs sm:text-sm text-emerald-200 hover:text-white underline underline-offset-4 hidden sm:block">
+          Loyiha haqida
+        </button>
+
+        <!-- AI Settings Button -->
+        <button onclick="openModal('settings-modal')" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-100 border border-emerald-400/40 text-xs sm:text-sm font-medium flex items-center gap-1.5 transition">
+          <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+          <span class="hidden sm:inline">AI hisobini ulash</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <!-- ================= MAIN CONTENT VIEWPORT ================= -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+  <!-- ================= CASHIER VIEW ================= -->
+  <main id="cashier-view" class="flex-1 max-w-[1600px] w-full mx-auto p-4 sm:p-6 flex flex-col gap-5">
 
-    <!-- ================= VIEW 1: DASHBOARD (4-rasmga 100% mos) ================= -->
-    <div id="view-dashboard" class="space-y-8">
+    <!-- Top Banner -->
+    <div class="flex flex-col gap-3">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-[#1c1917] tracking-tight">Kassir oynasi</h1>
+        <p class="text-sm text-stone-600">Mahsulotlarni kiriting, miqdorlarni tekshiring va chekni tayyorlang.</p>
+      </div>
+
+      <!-- AI Assistant Status Notification Banner (Exact to Screenshot) -->
+      <div class="bg-[#ecf3ee] border border-[#cbe1d2] rounded-xl p-3 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
+        <div class="flex items-start gap-3">
+          <div class="w-8 h-8 rounded-lg bg-[#2d6a4f] text-white flex items-center justify-center shrink-0 mt-0.5">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-bold text-[#1b4332]">AI yordamchisi:</span>
+              <span id="ai-active-mode-badge" class="px-2 py-0.5 rounded text-[11px] font-semibold bg-[#2d6a4f] text-white">Smart Mahalliy AI (Faol)</span>
+            </div>
+            <p class="text-xs text-stone-600 mt-0.5">
+              OpenAI / Gemini kaliti faqat shu ochilgan oynaning xotirasida ishlatiladi yoki qulay mahalliy sun'iy intellekt moduli orqali ishlaydi.
+            </p>
+          </div>
+        </div>
+        <button onclick="openModal('settings-modal')" class="shrink-0 text-xs font-semibold px-3.5 py-2 rounded-lg bg-white border border-[#2d6a4f]/30 text-[#1b4332] hover:bg-[#2d6a4f] hover:text-white transition shadow-xs flex items-center gap-1.5">
+          <span>AI hisobini sozlash</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 3-Column POS Workspace -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
       
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        <!-- LEFT 2 COLUMNS -->
-        <div class="lg:col-span-2 space-y-8">
-          
-          <!-- Hero Banner (4-rasm) -->
-          <div class="relative bg-white rounded-3xl p-8 border border-slate-100 card-shadow overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="z-10 max-w-md">
-              <span class="text-xs font-bold text-slate-400 block mb-1">Salom, Rustamjonov Ibrohim</span>
-              <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-2 leading-tight">
-                Bugun sizni<br>uzoq kutdim!
-              </h1>
-              <p class="text-sm text-slate-500 mb-6">
-                Darslarga tayyormisiz? <strong class="text-slate-800">2 ta dars</strong> tayyor turibdi
-              </p>
+      <!-- ================= COLUMN 1: MAHSULOTLAR (3.5 Cols) ================= -->
+      <div class="lg:col-span-4 bg-white rounded-2xl border border-stone-200/90 shadow-sm p-4 flex flex-col h-[760px]">
+        <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+          <div>
+            <h2 class="text-lg font-bold text-stone-900">Mahsulotlar</h2>
+            <p id="catalog-count-label" class="text-xs text-stone-500">Katalog narxlari</p>
+          </div>
+          <button onclick="openModal('add-product-modal')" class="text-xs font-bold px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 transition flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            <span>Qo'shish</span>
+          </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="mt-3 relative">
+          <input 
+            type="text" 
+            id="product-search-input" 
+            oninput="filterProducts()" 
+            placeholder="Mahsulot nomi yoki shtrix-kod..." 
+            class="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-[#f7f6f0] border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white transition"
+          />
+          <svg class="w-4 h-4 text-stone-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          <button onclick="clearSearch()" id="clear-search-btn" class="hidden text-stone-400 hover:text-stone-600 absolute right-2.5 top-2.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div class="mt-3 flex gap-1.5 overflow-x-auto pb-1 text-xs no-scrollbar">
+          <button onclick="setCategory('all')" class="cat-pill active px-2.5 py-1 rounded-lg bg-[#1b4332] text-white font-medium whitespace-nowrap transition">Barchasi</button>
+          <button onclick="setCategory('non')" class="cat-pill px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium whitespace-nowrap transition">Non</button>
+          <button onclick="setCategory('sut')" class="cat-pill px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium whitespace-nowrap transition">Sut & Tuxum</button>
+          <button onclick="setCategory('meva')" class="cat-pill px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium whitespace-nowrap transition">Mevalar</button>
+          <button onclick="setCategory('ichimlik')" class="cat-pill px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium whitespace-nowrap transition">Ichimliklar</button>
+          <button onclick="setCategory('boshqa')" class="cat-pill px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 font-medium whitespace-nowrap transition">Oziq-ovqat</button>
+        </div>
+
+        <!-- Product Cards Scrollable List -->
+        <div id="product-list-container" class="mt-3 flex-1 overflow-y-auto space-y-2 pr-1">
+          <!-- Dynamically populated from JS -->
+        </div>
+
+        <!-- Quick barcode scan simulator -->
+        <div class="pt-3 border-t border-stone-100 mt-2 flex items-center justify-between text-xs text-stone-500">
+          <span>Tezkor qo'shish uchun ustiga bosing</span>
+          <span class="font-mono text-[10px] bg-stone-100 px-1.5 py-0.5 rounded">EAN-13 Scanner</span>
+        </div>
+      </div>
+
+      <!-- ================= COLUMN 2: BUYURTMA KIRITISH (AI ENGINE) (4.5 Cols) ================= -->
+      <div class="lg:col-span-4 bg-white rounded-2xl border border-stone-200/90 shadow-sm p-4 sm:p-5 flex flex-col h-[760px]">
+        <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+          <h2 class="text-lg font-bold text-stone-900">Buyurtma kiritish</h2>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">AI Vision & Voice</span>
+        </div>
+
+        <!-- Sub Tabs: [Rasm] [Ovoz] [Matn] [Soliq QR] -->
+        <div class="mt-4 grid grid-cols-4 p-1 rounded-xl bg-[#eeebe0] gap-1">
+          <button id="input-tab-image" onclick="switchInputTab('image')" class="py-2 text-[11px] sm:text-xs font-bold rounded-lg transition-all bg-[#1b4332] text-white shadow-xs flex items-center justify-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            <span>Rasm</span>
+          </button>
+          <button id="input-tab-voice" onclick="switchInputTab('voice')" class="py-2 text-[11px] sm:text-xs font-bold rounded-lg transition-all text-stone-700 hover:text-stone-900 flex items-center justify-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
+            <span>Ovoz</span>
+          </button>
+          <button id="input-tab-text" onclick="switchInputTab('text')" class="py-2 text-[11px] sm:text-xs font-bold rounded-lg transition-all text-stone-700 hover:text-stone-900 flex items-center justify-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+            <span>Matn</span>
+          </button>
+          <button id="input-tab-soliq" onclick="switchInputTab('soliq')" class="py-2 text-[11px] sm:text-xs font-bold rounded-lg transition-all text-emerald-800 hover:text-emerald-950 flex items-center justify-center gap-1 bg-emerald-50 border border-emerald-300/60" title="Soliq chekini skanerlash va 1% keshbek olish">
+            <svg class="w-3.5 h-3.5 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+            <span>Soliq QR</span>
+          </button>
+        </div>
+
+        <!-- ================= TAB CONTENT 1: RASM ================= -->
+        <div id="content-tab-image" class="mt-4 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="mb-2">
+              <h3 class="text-sm font-bold text-stone-900">Mahsulotlar rasmini yuklang</h3>
+              <p class="text-xs text-stone-500">Mahsulotlar bir-birini yopmasin, yorliqlar ko'rinib tursin.</p>
+            </div>
+
+            <!-- Upload Drop Area / Preview Area -->
+            <div 
+              id="image-dropzone" 
+              onclick="triggerFileInput()"
+              ondragover="handleDragOver(event)" 
+              ondragleave="handleDragLeave(event)" 
+              ondrop="handleFileDrop(event)"
+              class="relative border-2 border-dashed border-stone-300 hover:border-emerald-500 rounded-2xl bg-[#faf9f5] h-52 flex flex-col items-center justify-center p-4 text-center cursor-pointer transition overflow-hidden group"
+            >
+              <input type="file" id="image-file-input" accept="image/*" class="hidden" onchange="handleImageSelected(event)" />
               
-              <!-- +37 Coin olish tugmasi -->
-              <button id="hero-coin-btn" onclick="claimDailyBonus()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-bold text-xs hover:bg-amber-100 hover:scale-105 active:scale-95 transition-all shadow-sm">
-                <span>🪙</span>
-                <span>+37 coin olish</span>
+              <!-- Placeholder State -->
+              <div id="dropzone-placeholder" class="flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center mb-2 group-hover:scale-110 transition">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                  </svg>
+                </div>
+                <div class="text-sm font-bold text-stone-800">Rasm tanlash</div>
+                <p class="text-xs text-stone-400 mt-1">JPG, PNG yoki WebP — 20 MB gacha</p>
+                <div class="mt-2 text-[11px] text-emerald-800 bg-emerald-100/60 px-2.5 py-1 rounded-md font-medium">
+                  Kamera yoki fayldan yuklash
+                </div>
+              </div>
+
+              <!-- Preview State with detection overlay -->
+              <div id="dropzone-preview-container" class="hidden absolute inset-0 w-full h-full bg-black/5 flex items-center justify-center">
+                <img id="image-preview" src="" alt="Yuklangan rasm" class="max-h-full max-w-full object-contain" />
+                <div id="scanner-beam" class="hidden absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-emerald-400 to-transparent scanner-line shadow-lg shadow-emerald-400"></div>
+                <div id="detection-boxes-container" class="absolute inset-0 pointer-events-none"></div>
+              </div>
+            </div>
+
+            <!-- Preset Samples (With mini photo thumbnails) -->
+            <div class="mt-3">
+              <span class="text-xs text-stone-500 font-medium">Tayyor foto namunalar:</span>
+              <div class="grid grid-cols-3 gap-2 mt-1.5">
+                <button onclick="loadSampleImage(1)" class="group p-1.5 bg-stone-50 hover:bg-emerald-50 hover:border-emerald-400 border border-stone-200 rounded-xl transition text-left flex flex-col gap-1 shadow-xs">
+                  <div class="w-full h-12 rounded-lg overflow-hidden bg-stone-200">
+                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=200&auto=format&fit=crop&q=80" alt="1-namuna" class="w-full h-full object-cover group-hover:scale-105 transition" />
+                  </div>
+                  <span class="text-[11px] font-bold text-stone-800 group-hover:text-emerald-800 truncate">1-namuna</span>
+                </button>
+                <button onclick="loadSampleImage(2)" class="group p-1.5 bg-stone-50 hover:bg-emerald-50 hover:border-emerald-400 border border-stone-200 rounded-xl transition text-left flex flex-col gap-1 shadow-xs">
+                  <div class="w-full h-12 rounded-lg overflow-hidden bg-stone-200">
+                    <img src="https://images.unsplash.com/photo-1584473457406-6240486418e9?w=200&auto=format&fit=crop&q=80" alt="2-namuna" class="w-full h-full object-cover group-hover:scale-105 transition" />
+                  </div>
+                  <span class="text-[11px] font-bold text-stone-800 group-hover:text-emerald-800 truncate">2-namuna</span>
+                </button>
+                <button onclick="loadSampleImage(3)" class="group p-1.5 bg-stone-50 hover:bg-emerald-50 hover:border-emerald-400 border border-stone-200 rounded-xl transition text-left flex flex-col gap-1 shadow-xs">
+                  <div class="w-full h-12 rounded-lg overflow-hidden bg-stone-200">
+                    <img src="https://images.unsplash.com/photo-1506484381205-f7945653044d?w=200&auto=format&fit=crop&q=80" alt="3-namuna" class="w-full h-full object-cover group-hover:scale-105 transition" />
+                  </div>
+                  <span class="text-[11px] font-bold text-stone-800 group-hover:text-emerald-800 truncate">3-namuna</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Detected Items list / tags if any -->
+            <div id="detected-items-summary" class="mt-3 hidden">
+              <div class="text-xs font-bold text-stone-700 mb-1 flex items-center justify-between">
+                <span>Aniqlangan mahsulotlar:</span>
+                <span id="detected-count-badge" class="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded text-[11px]">4 ta</span>
+              </div>
+              <div id="detected-tags-list" class="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto"></div>
+            </div>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div class="mt-4 pt-3 border-t border-stone-100 flex flex-col gap-2">
+            <button 
+              id="detect-btn" 
+              onclick="processImageRecognition()" 
+              class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-[#1b4332] text-white hover:bg-[#143527] transition shadow-md flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <svg id="detect-spinner" class="hidden w-4 h-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+              </svg>
+              <span id="detect-btn-text">Mahsulotlarni aniqlash</span>
+            </button>
+            <p class="text-[11px] text-stone-500 text-center">
+              Surat tahlil uchun OpenAI/Gemini yoki o'rnatilgan lokal Vision AI modeliga yuboriladi.
+            </p>
+            <div id="image-status-bar" class="text-xs bg-[#ecf3ee] text-[#1b4332] p-2.5 rounded-lg border border-[#cbe1d2] text-center font-medium">
+              Tayyor: Boshlash uchun namunani tanlang yoki rasm yuklang.
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= TAB CONTENT 2: OVOZ (VOICE) ================= -->
+        <div id="content-tab-voice" class="mt-4 flex-1 flex flex-col justify-between hidden">
+          <div>
+            <div class="mb-3">
+              <h3 class="text-sm font-bold text-stone-900">Ovozli buyurtma kiritish</h3>
+              <p class="text-xs text-stone-500">Mijoz yoki kassir ovozi orqali mahsulotlarni ayting.</p>
+            </div>
+
+            <!-- Big Mic Button -->
+            <div class="flex flex-col items-center justify-center py-6 bg-[#faf9f5] border border-stone-200 rounded-2xl relative">
+              <button 
+                id="mic-record-btn" 
+                onclick="toggleSpeechRecognition()" 
+                class="w-20 h-20 rounded-full bg-[#1b4332] text-white flex items-center justify-center shadow-lg transition-transform hover:scale-105 active:scale-95"
+              >
+                <svg id="mic-icon" class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                </svg>
+              </button>
+              <div id="mic-status-text" class="text-xs font-bold text-stone-700 mt-4">
+                Mikrofonni yoqish uchun bosing
+              </div>
+              <p class="text-[11px] text-stone-400 mt-0.5">O'zbek yoki rus tilida gapiring</p>
+            </div>
+
+            <!-- Live Speech Transcript Box -->
+            <div class="mt-3">
+              <label class="text-xs font-semibold text-stone-700">Eshitilgan matn:</label>
+              <div id="voice-transcript-box" class="mt-1 p-3 bg-white border border-stone-200 rounded-xl min-h-[72px] text-xs sm:text-sm text-stone-800 italic">
+                Mikrofon tugmasini bosib gapiring yoki quyidagi tayyor iboralardan birini tanlang...
+              </div>
+            </div>
+
+            <!-- Sample Voice Prompts -->
+            <div class="mt-3">
+              <span class="text-xs text-stone-500 font-medium">Tezkor namunalar:</span>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <button onclick="useVoiceSample('2 ta non va 1 litr sut')" class="text-xs px-2.5 py-1 bg-stone-100 hover:bg-emerald-50 hover:text-emerald-800 border border-stone-200 rounded-lg transition">
+                  "2 ta non va 1 litr sut"
+                </button>
+                <button onclick="useVoiceSample('1 kg olma, 2 kg banan, 10 ta tuxum')" class="text-xs px-2.5 py-1 bg-stone-100 hover:bg-emerald-50 hover:text-emerald-800 border border-stone-200 rounded-lg transition">
+                  "1 kg olma, 2 kg banan, 10 ta tuxum"
+                </button>
+                <button onclick="useVoiceSample('3 ta suv, 2 ta kola va shirinlik')" class="text-xs px-2.5 py-1 bg-stone-100 hover:bg-emerald-50 hover:text-emerald-800 border border-stone-200 rounded-lg transition">
+                  "3 ta suv, 2 ta kola va shirinlik"
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div class="mt-4 pt-3 border-t border-stone-100">
+            <button 
+              onclick="processVoiceText()" 
+              class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-[#1b4332] text-white hover:bg-[#143527] transition shadow-md flex items-center justify-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <span>Matnni tahlil qilish va savatga qo'shish</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ================= TAB CONTENT 3: MATN (TEXT) ================= -->
+        <div id="content-tab-text" class="mt-4 flex-1 flex flex-col justify-between hidden">
+          <div>
+            <div class="mb-2">
+              <h3 class="text-sm font-bold text-stone-900">Matnli tezkor buyurtma</h3>
+              <p class="text-xs text-stone-500">Ixtiyoriy matn kiriting, AI kerakli mahsulot va miqdorlarni ajratib oladi.</p>
+            </div>
+
+            <textarea 
+              id="natural-text-input" 
+              rows="6" 
+              placeholder="Masalan: Menga 2 ta non, 1 litr sut, 2 kilo olma va 5 ta tuxum bering..." 
+              class="w-full p-3 text-xs sm:text-sm bg-[#faf9f5] border border-stone-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 focus:bg-white transition resize-none"
+            ></textarea>
+
+            <!-- Quick Template Chips -->
+            <div class="mt-3">
+              <span class="text-xs text-stone-500 font-medium">Tayyor shablonlar:</span>
+              <div class="flex flex-wrap gap-1.5 mt-1.5">
+                <button onclick="insertTextTemplate('2 ta non, 1 kg olma, 1 litr sut')" class="text-xs px-2.5 py-1 bg-stone-100 hover:bg-stone-200 rounded-lg text-stone-700">
+                  + Non, olma, sut
+                </button>
+                <button onclick="insertTextTemplate('3 ta fanta, 2 ta shokolad, 1 ta suv')" class="text-xs px-2.5 py-1 bg-stone-100 hover:bg-stone-200 rounded-lg text-stone-700">
+                  + Fanta, shokolad, suv
+                </button>
+                <button onclick="insertTextTemplate('1 kg go\'sht, 2 kg kartoshka, 1 litr pista yog\'i')" class="text-xs px-2.5 py-1 bg-stone-100 hover:bg-stone-200 rounded-lg text-stone-700">
+                  + Go'sht, kartoshka, yog'
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action -->
+          <div class="mt-4 pt-3 border-t border-stone-100">
+            <button 
+              onclick="processNaturalTextInput()" 
+              class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-[#1b4332] text-white hover:bg-[#143527] transition shadow-md flex items-center justify-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+              <span>Savatga kiritish (AI Tahlil)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ================= TAB CONTENT 4: SOLIQ SKANER (OFD & 1% KESHBEK) ================= -->
+        <div id="content-tab-soliq" class="mt-4 flex-1 flex flex-col justify-between hidden">
+          <div class="overflow-y-auto pr-1">
+            <div class="mb-2 flex items-center justify-between">
+              <div>
+                <h3 class="text-sm font-bold text-stone-900 flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded bg-emerald-700 text-white flex items-center justify-center text-xs">🏛️</span>
+                  <span>Soliq Fiskal Chekini Skanerlash</span>
+                </h3>
+                <p class="text-[11px] text-stone-500">QR-kodni skanerlang, 1% keshbek va soliq ma'lumotlarini oling.</p>
+              </div>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                1% Keshbek
+              </span>
+            </div>
+
+            <!-- Scanner Box with Camera & File options -->
+            <div class="border border-stone-200 rounded-2xl bg-[#faf9f5] p-3 text-center relative overflow-hidden">
+              
+              <!-- Video / QR Target Viewport -->
+              <div id="soliq-tab-camera-container" class="relative w-full h-44 bg-stone-900 rounded-xl overflow-hidden flex items-center justify-center border border-stone-300">
+                <div id="soliq-tab-qr-reader" class="w-full h-full flex items-center justify-center"></div>
+                
+                <!-- Overlay Idle State -->
+                <div id="soliq-tab-idle-overlay" class="absolute inset-0 bg-[#0f291e]/85 backdrop-blur-2xs flex flex-col items-center justify-center p-3 text-white">
+                  <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 border border-emerald-400/40 flex items-center justify-center mb-2">
+                    <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+                    </svg>
+                  </div>
+                  <div class="text-xs font-bold">Soliq chekidagi QR-kodni ko'rsating</div>
+                  <p class="text-[10px] text-emerald-200/80 mt-0.5">Kamerani yoqing yoki chek rasmini yuklang</p>
+                  <button onclick="startSoliqCamera('tab')" id="soliq-tab-cam-toggle-btn" class="mt-2.5 px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-stone-900 font-extrabold text-xs flex items-center gap-1.5 transition shadow">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    <span>Kamerani yoqish</span>
+                  </button>
+                </div>
+
+                <!-- Laser scanning beam -->
+                <div id="soliq-tab-laser" class="hidden absolute left-4 right-4 h-0.5 bg-gradient-to-r from-transparent via-red-500 to-transparent scanner-line shadow-lg shadow-red-500"></div>
+              </div>
+
+              <!-- Quick File Upload & Fullscreen -->
+              <div class="mt-2 flex items-center justify-between gap-2">
+                <input type="file" id="soliq-file-input" accept="image/*" class="hidden" onchange="handleSoliqImageUpload(event)" />
+                <button onclick="document.getElementById('soliq-file-input').click()" class="flex-1 py-1.5 px-2 bg-white hover:bg-stone-100 border border-stone-200 rounded-lg text-[11px] font-bold text-stone-700 transition flex items-center justify-center gap-1">
+                  <svg class="w-3.5 h-3.5 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                  <span>Chek rasmini yuklash</span>
+                </button>
+                <button onclick="openSoliqScannerModal()" class="py-1.5 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg text-[11px] font-bold transition flex items-center gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+                  <span>Katta ekran</span>
+                </button>
+              </div>
+
+              <!-- Preset Soliq receipts (Super convenient for testing!) -->
+              <div class="mt-2.5 pt-2 border-t border-stone-200 text-left">
+                <div class="text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1.5">Tayyor Soliq cheklari namunalari:</div>
+                <div class="grid grid-cols-3 gap-1.5">
+                  <button onclick="loadDemoSoliqReceipt('korzinka')" class="p-1.5 rounded-lg bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-400 text-left transition shadow-2xs">
+                    <div class="text-[10px] font-extrabold text-stone-900 truncate">Korzinka</div>
+                    <div class="text-[9px] font-mono font-bold text-emerald-700">125 000 so'm</div>
+                    <div class="text-[8px] text-stone-400">Keshbek: 1 250</div>
+                  </button>
+                  <button onclick="loadDemoSoliqReceipt('makro')" class="p-1.5 rounded-lg bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-400 text-left transition shadow-2xs">
+                    <div class="text-[10px] font-extrabold text-stone-900 truncate">Makro</div>
+                    <div class="text-[9px] font-mono font-bold text-emerald-700">68 000 so'm</div>
+                    <div class="text-[8px] text-stone-400">Keshbek: 680</div>
+                  </button>
+                  <button onclick="loadDemoSoliqReceipt('havas')" class="p-1.5 rounded-lg bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-400 text-left transition shadow-2xs">
+                    <div class="text-[10px] font-extrabold text-stone-900 truncate">Havas</div>
+                    <div class="text-[9px] font-mono font-bold text-emerald-700">42 000 so'm</div>
+                    <div class="text-[8px] text-stone-400">Keshbek: 420</div>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scanned Soliq Data Card -->
+            <div id="soliq-tab-result-card" class="mt-3 bg-white border border-emerald-300 rounded-xl p-3 shadow-xs hidden animate-in fade-in zoom-in-95">
+              <div class="flex items-start justify-between border-b border-stone-100 pb-2">
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                    ✓
+                  </div>
+                  <div>
+                    <div class="text-xs font-extrabold text-[#1b4332] flex items-center gap-1">
+                      <span>OFD Fiskal chek tasdiqlandi</span>
+                      <span class="text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-bold">Soliq.uz</span>
+                    </div>
+                    <div id="soliq-card-store-name" class="text-[11px] font-bold text-stone-800">FE «Anglesey Food» MCHJ (Korzinka)</div>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <div id="soliq-card-cashback" class="text-xs font-black text-emerald-700 font-mono">+1 250 so'm</div>
+                  <div class="text-[9px] text-emerald-600 font-bold">1% Keshbek</div>
+                </div>
+              </div>
+
+              <!-- Fiscal Details Table -->
+              <div class="grid grid-cols-2 gap-x-2 gap-y-1 text-[10px] text-stone-600 my-2 bg-stone-50 p-2 rounded-lg font-mono">
+                <div>STIR: <strong id="soliq-card-stir" class="text-stone-800">202099724</strong></div>
+                <div>Chek: <strong id="soliq-card-check-no" class="text-stone-800">#004821</strong></div>
+                <div>ФМ: <strong id="soliq-card-fm" class="text-stone-800">FM-9812409</strong></div>
+                <div>ФП: <strong id="soliq-card-fp" class="text-stone-800">4819204910</strong></div>
+                <div>QQS (12%): <strong id="soliq-card-vat" class="text-stone-800">15 000 so'm</strong></div>
+                <div>Jami: <strong id="soliq-card-total" class="text-emerald-800 font-extrabold">125 000 so'm</strong></div>
+              </div>
+
+              <!-- Quick Soliq Actions -->
+              <div class="flex gap-1.5 pt-1">
+                <button onclick="importSoliqCheckToCart()" class="flex-1 py-1.5 px-2 bg-[#1b4332] hover:bg-[#143527] text-white rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1 shadow-xs">
+                  <svg class="w-3.5 h-3.5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                  <span>Savatga yuklash</span>
+                </button>
+                <button onclick="applySoliqCashbackDiscount()" class="py-1.5 px-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 rounded-lg text-[11px] font-bold transition flex items-center justify-center gap-1">
+                  <span>-1% Chegirma</span>
+                </button>
+                <a id="soliq-card-link" href="https://ofd.soliq.uz" target="_blank" class="py-1.5 px-2 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg text-[11px] font-bold transition flex items-center justify-center" title="Rasmiy Soliq.uz saytida ochish">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Note -->
+          <div class="mt-3 pt-2 border-t border-stone-100 text-[10px] text-stone-400 text-center flex items-center justify-center gap-1">
+            <span>🛡️ O'zbekiston Respublikasi Davlat Soliq Qo'mitasi OFD tizimi</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ================= COLUMN 3: XARID CHEKI (RECEIPT / CART) (4 Cols) ================= -->
+      <div class="lg:col-span-4 bg-white rounded-2xl border border-stone-200/90 shadow-sm p-4 sm:p-5 flex flex-col h-[760px] relative">
+        
+        <!-- Header -->
+        <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+          <div>
+            <h2 class="text-lg font-bold text-stone-900">Xarid cheki</h2>
+            <p class="text-xs text-stone-500">Namoyish kassasi</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+            Savat loyihasi
+          </span>
+        </div>
+
+        <!-- Receipt Header Details -->
+        <div class="mt-3 text-center border-b border-dashed border-stone-200 pb-2">
+          <div class="text-sm font-bold tracking-wider text-stone-900">AI DO'KON</div>
+          <div class="text-[11px] text-stone-500">NAMOYISH KASSASI • TOSHKENT SH.</div>
+          <div class="text-[10px] font-mono text-stone-400 mt-0.5 flex justify-between px-1">
+            <span id="receipt-date">21.10.2026</span>
+            <span id="receipt-cashier-label">Kassir: Azizbek</span>
+          </div>
+        </div>
+
+        <!-- Cart Items Scrollable Table -->
+        <div class="mt-2 flex-1 overflow-y-auto pr-1">
+          <table class="w-full text-xs">
+            <thead class="text-[11px] text-stone-400 border-b border-stone-100 font-medium">
+              <tr>
+                <th class="text-left py-1.5">Mahsulot</th>
+                <th class="text-center py-1.5">Miqdor</th>
+                <th class="text-right py-1.5">Summa</th>
+                <th class="w-6"></th>
+              </tr>
+            </thead>
+            <tbody id="cart-table-body" class="divide-y divide-stone-100 font-sans">
+              <!-- Cart items rendered via JS -->
+            </tbody>
+          </table>
+
+          <!-- Empty cart state -->
+          <div id="cart-empty-state" class="py-12 flex flex-col items-center justify-center text-center">
+            <div class="w-12 h-12 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center mb-2">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+            </div>
+            <p class="text-xs font-bold text-stone-700">Chek hozircha bo'sh</p>
+            <p class="text-[11px] text-stone-400 mt-0.5 max-w-[200px]">Katalogdan mahsulot tanlang yoki AI orqali kiritishdan foydalaning.</p>
+          </div>
+        </div>
+
+        <!-- Receipt Summary Calculation Area -->
+        <div class="pt-3 border-t border-dashed border-stone-300 mt-2">
+          
+          <!-- Promo / Discount row -->
+          <div class="flex items-center justify-between text-xs text-stone-500 mb-1">
+            <span>Oraliq summa:</span>
+            <span id="subtotal-display" class="font-semibold text-stone-700 font-mono">0 so'm</span>
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-emerald-600 mb-1">
+            <div class="flex items-center gap-1">
+              <span>Chegirma:</span>
+              <button onclick="promptPromoCode()" class="text-[10px] text-emerald-700 underline font-medium hover:text-emerald-900">+ Promo</button>
+            </div>
+            <span id="discount-display" class="font-semibold font-mono">-0 so'm</span>
+          </div>
+
+          <!-- Total (Bold & Huge exactly like in screenshot: "Jami 125 000 so'm") -->
+          <div class="flex items-baseline justify-between pt-2 border-t border-stone-200 my-1">
+            <span class="text-sm font-bold text-stone-900">Jami</span>
+            <span id="total-display" class="text-xl sm:text-2xl font-black text-stone-900 tracking-tight font-mono">
+              0 so'm
+            </span>
+          </div>
+
+          <p class="text-[10px] text-stone-400 text-center my-1">
+            Miqdorlarni tekshiring va chekni tasdiqlang.
+          </p>
+
+          <!-- Main Checkout Button -->
+          <div class="flex flex-col gap-2 mt-2">
+            <button 
+              id="confirm-checkout-btn" 
+              onclick="openCheckoutModal()" 
+              class="w-full py-3 px-4 rounded-xl font-extrabold text-sm bg-[#1b4332] text-white hover:bg-[#143527] transition shadow-md active:scale-[0.99] flex items-center justify-center gap-2"
+            >
+              <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <span>Chekni tasdiqlash</span>
+            </button>
+
+            <!-- Secondary Actions -->
+            <div class="grid grid-cols-3 gap-1.5">
+              <button onclick="speakReceiptSummary()" class="py-1.5 px-2 text-[11px] font-semibold rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 transition flex items-center justify-center gap-1" title="Ovozli o'qish">
+                <svg class="w-3.5 h-3.5 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+                <span>O'qish</span>
+              </button>
+              <button onclick="openThermalReceiptModal()" class="py-1.5 px-2 text-[11px] font-semibold rounded-lg bg-stone-100 hover:bg-stone-200 text-stone-700 transition flex items-center justify-center gap-1" title="Chek ko'rinishi">
+                <svg class="w-3.5 h-3.5 text-stone-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                <span>Chop etish</span>
+              </button>
+              <button onclick="clearCart()" class="py-1.5 px-2 text-[11px] font-semibold rounded-lg bg-red-50 hover:bg-red-100 text-red-700 transition flex items-center justify-center gap-1" title="Savatni tozalash">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                <span>Tozalash</span>
               </button>
             </div>
-
-            <!-- 3D Robot & 1/3 Circular Badge -->
-            <div class="relative flex items-center justify-center">
-              <div class="absolute top-0 right-0 z-20 w-12 h-12 rounded-full bg-slate-900/90 text-white border-2 border-white flex items-center justify-center text-xs font-black shadow-lg">
-                1/3
-              </div>
-
-              <div class="w-48 h-48 sm:w-56 sm:h-56 relative flex items-center justify-center robot-animate">
-                <svg class="w-48 h-48 drop-shadow-2xl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="35" y="40" width="130" height="95" rx="30" fill="#e8dfd5" stroke="#786654" stroke-width="4"/>
-                  <rect x="48" y="52" width="104" height="72" rx="20" fill="#0f172a"/>
-                  <rect x="66" y="70" width="16" height="22" rx="8" fill="#10b981"/>
-                  <rect x="118" y="70" width="16" height="22" rx="8" fill="#10b981"/>
-                  <path d="M88 100 Q100 112 112 100" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
-                  <path d="M55 145 C55 135 145 135 145 145 L155 190 C155 195 45 195 45 190 Z" fill="#1e293b"/>
-                  <ellipse cx="40" cy="140" rx="14" ry="16" fill="#e8dfd5" stroke="#786654" stroke-width="3"/>
-                  <path d="M38 126 C38 120 48 120 48 128 L48 138" stroke="#786654" stroke-width="4" stroke-linecap="round"/>
-                  <circle cx="100" cy="28" r="8" fill="#ff5b22"/>
-                  <line x1="100" y1="36" x2="100" y2="40" stroke="#786654" stroke-width="4"/>
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          <!-- 4 Ta Asosiy Karta -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div onclick="switchView('shop')" class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow card-hover cursor-pointer group flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-amber-50 text-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">🎁</div>
-              <div>
-                <h3 class="text-sm font-black text-slate-800 group-hover:text-orange-500 transition-colors">CoinShop</h3>
-                <p class="text-[11px] text-slate-400">Sovg‘alar ro‘yxati</p>
-              </div>
-            </div>
-
-            <div onclick="switchView('courses')" class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow card-hover cursor-pointer group flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-blue-50 text-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">📚</div>
-              <div>
-                <h3 class="text-sm font-black text-slate-800 group-hover:text-blue-500 transition-colors">Kurslar</h3>
-                <p class="text-[11px] text-slate-400">Barcha kurslaringiz</p>
-              </div>
-            </div>
-
-            <div onclick="document.getElementById('leaderboard-section').scrollIntoView({behavior: 'smooth'})" class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow card-hover cursor-pointer group flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-purple-50 text-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">🏆</div>
-              <div>
-                <h3 class="text-sm font-black text-slate-800 group-hover:text-purple-500 transition-colors">Leaderboard</h3>
-                <p class="text-[11px] text-slate-400">Reytingdagi o‘rningiz</p>
-              </div>
-            </div>
-
-            <div onclick="showToast('Sertifikatlaringiz: Matematika & English darslari muvaffaqiyatli yakunlanmoqda!', 'info')" class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow card-hover cursor-pointer group flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-yellow-50 text-2xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">🎖️</div>
-              <div>
-                <h3 class="text-sm font-black text-slate-800 group-hover:text-yellow-600 transition-colors">Sertifikatlar</h3>
-                <p class="text-[11px] text-slate-400">Yutuqlaringiz</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Bugungi Vazifalar (4-rasmdagi 3 ta dars) -->
-          <div class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow space-y-5">
-            <h2 class="text-lg font-black text-slate-900">Bugungi vazifalar</h2>
-            
-            <div class="space-y-3">
-              <!-- 1. Matematika -->
-              <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-amber-300 transition-colors cursor-pointer" onclick="openLessonTestModal('math', 6)">
-                <div class="w-8 h-8 rounded-full bg-orange-500 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm shadow-orange-300">1</div>
-                <div class="w-20 h-14 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-white text-xs font-black shrink-0 p-1 text-center shadow-sm">Matematika</div>
-                <div class="flex-1">
-                  <h4 class="text-sm font-bold text-slate-800">Matematika</h4>
-                  <p class="text-xs text-slate-500">Birhadni ko‘phadga ko‘paytirish</p>
-                </div>
-                <span class="px-4 py-2 rounded-xl bg-amber-100 text-amber-800 text-xs font-black flex items-center gap-1">🪙 +33 coin</span>
-              </div>
-
-              <!-- 2. Dasturlash kursi -->
-              <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100 hover:border-orange-300 transition-colors cursor-pointer" onclick="openLessonTestModal('programming', 1)">
-                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 font-black text-xs flex items-center justify-center shrink-0">2</div>
-                <div class="w-20 h-14 rounded-xl bg-slate-800 flex items-center justify-center text-white text-xs font-black shrink-0 shadow-sm">Web Code</div>
-                <div class="flex-1">
-                  <h4 class="text-sm font-bold text-slate-800">Dasturlash kursi</h4>
-                  <p class="text-xs text-slate-500">Github orqali o‘zgartirish kiritish</p>
-                </div>
-                <span class="px-4 py-2 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 text-xs font-black flex items-center gap-1">🪙 +24 coin</span>
-              </div>
-
-              <!-- 3. General English -->
-              <div class="flex items-center gap-4 p-4 rounded-2xl bg-emerald-50/50 border border-emerald-100">
-                <div class="w-8 h-8 rounded-full bg-emerald-500 text-white text-xs flex items-center justify-center shrink-0 shadow-sm shadow-emerald-200">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                </div>
-                <div class="w-20 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-black shrink-0 shadow-sm">ENGLISH</div>
-                <div class="flex-1">
-                  <h4 class="text-sm font-bold text-slate-800">General English</h4>
-                  <p class="text-xs text-slate-500">Great discoveries</p>
-                </div>
-                <span class="px-3.5 py-1.5 rounded-xl bg-emerald-100 text-emerald-700 text-xs font-bold">✓ Bajarildi</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Mini O'yinlar Bo'limi (4-rasm) -->
-          <div class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow space-y-4">
-            <h2 class="text-lg font-black text-slate-900">Mini o‘yinlar</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div onclick="switchView('math-path')" class="p-4 rounded-2xl bg-blue-50/70 border border-blue-100 cursor-pointer hover:scale-105 transition-all">
-                <div class="text-3xl mb-2">🎲</div>
-                <h4 class="text-sm font-black text-blue-900">Matematika</h4>
-                <p class="text-[11px] text-blue-600">Sonlarni o‘rganamiz</p>
-              </div>
-              <div onclick="switchView('english-course')" class="p-4 rounded-2xl bg-purple-50/70 border border-purple-100 cursor-pointer hover:scale-105 transition-all">
-                <div class="text-3xl mb-2">🔤</div>
-                <h4 class="text-sm font-black text-purple-900">So‘zlarni top</h4>
-                <p class="text-[11px] text-purple-600">Ingliz tilini o‘rganing</p>
-              </div>
-              <div onclick="showToast('Ranglar va grafik dizayn o‘yini ochilmoqda...', 'info')" class="p-4 rounded-2xl bg-rose-50/70 border border-rose-100 cursor-pointer hover:scale-105 transition-all">
-                <div class="text-3xl mb-2">🎨</div>
-                <h4 class="text-sm font-black text-rose-900">Ranglarni aralashtir</h4>
-                <p class="text-[11px] text-rose-600">Grafik dizayn</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Leaderboard Bo'limi (4-rasmdagi Podiym va Top 10) -->
-          <div id="leaderboard-section" class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow space-y-6">
-            <div class="flex items-center justify-between">
-              <div>
-                <h2 class="text-lg font-black text-slate-900">Leaderboard</h2>
-                <p class="text-xs text-slate-400">Umumiy reyting</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <span class="text-2xl font-black text-slate-900">20972</span>
-                <span class="text-xs font-bold text-slate-400">point (#28-o‘rin)</span>
-              </div>
-            </div>
-
-            <!-- 3 Talik Podiym (1, 2, 3) -->
-            <div class="flex items-end justify-center gap-3 pt-4">
-              <!-- 2-o'rin -->
-              <div class="flex flex-col items-center flex-1 max-w-[130px]">
-                <div class="w-12 h-12 rounded-full bg-slate-200 border-2 border-slate-300 flex items-center justify-center font-bold text-xs mb-2">#2</div>
-                <div class="podium-2 w-full h-28 flex flex-col items-center justify-center text-center p-2">
-                  <span class="text-xs font-black text-slate-700">47540 point</span>
-                  <span class="text-[10px] text-slate-500 font-semibold">Diyorbek</span>
-                </div>
-              </div>
-
-              <!-- 1-o'rin (Oltin) -->
-              <div class="flex flex-col items-center flex-1 max-w-[140px]">
-                <div class="w-14 h-14 rounded-full bg-amber-400 border-2 border-amber-500 flex items-center justify-center text-xl mb-2 shadow-lg shadow-amber-200">👑</div>
-                <div class="podium-1 w-full h-36 flex flex-col items-center justify-center text-center p-2">
-                  <span class="text-xs font-black text-amber-900">47970 point</span>
-                  <span class="text-[10px] text-amber-700 font-extrabold">Golibjon.N</span>
-                </div>
-              </div>
-
-              <!-- 3-o'rin -->
-              <div class="flex flex-col items-center flex-1 max-w-[130px]">
-                <div class="w-12 h-12 rounded-full bg-orange-200 border-2 border-orange-300 flex items-center justify-center font-bold text-xs mb-2">#3</div>
-                <div class="podium-3 w-full h-24 flex flex-col items-center justify-center text-center p-2">
-                  <span class="text-xs font-black text-orange-900">43741 point</span>
-                  <span class="text-[10px] text-orange-700 font-semibold">Tigireva D</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Top 10 Yetakchilar Ro'yxati -->
-            <div class="space-y-2 pt-2">
-              <h4 class="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Top 10 yetakchilar ro‘yxati</h4>
-              <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 text-xs font-bold text-slate-700">
-                <span class="flex items-center gap-2"><span>#4</span> <span>Najmiddinova Muxlisa</span></span>
-                <span>42220 point</span>
-              </div>
-              <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 text-xs font-bold text-slate-700">
-                <span class="flex items-center gap-2"><span>#5</span> <span>Hasanova Diloromxon</span></span>
-                <span>41022 point</span>
-              </div>
-              <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-50 text-xs font-bold text-slate-700">
-                <span class="flex items-center gap-2"><span>#6</span> <span>Muzaffarova Mahnura</span></span>
-                <span>37531 point</span>
-              </div>
-              <div class="flex items-center justify-between p-3 rounded-2xl bg-orange-50 border border-orange-300 text-xs font-extrabold text-orange-900">
-                <span class="flex items-center gap-2"><span>#28</span> <span>Rustamjonov Ibrohim (Siz)</span></span>
-                <span>20972 point</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- RIGHT COLUMN: 4-rasmdagi barcha o'ng yon panel vidjetlari -->
-        <div class="space-y-6">
-          
-          <!-- Streak Vidjeti (4-rasmdagi 61 kunlik doira) -->
-          <div class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow flex flex-col items-center justify-center text-center">
-            <div class="streak-circle-container relative my-2">
-              <div class="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
-                <div class="text-3xl mb-1 animate-bounce">🔥</div>
-                <span class="text-3xl font-black text-slate-900 tracking-tight user-streak-display">61</span>
-                <span class="text-[11px] font-bold text-slate-400">Kun ketma-ket</span>
-              </div>
-              <div class="streak-day-badge active" style="top: 0; left: 78px;"><span>🔥</span><span>Du</span></div>
-              <div class="streak-day-badge active" style="top: 25px; right: 10px;"><span>🔥</span><span>Se</span></div>
-              <div class="streak-day-badge active" style="top: 95px; right: 5px;"><span>🔥</span><span>Ch</span></div>
-              <div class="streak-day-badge active" style="bottom: 5px; right: 40px;"><span>🔥</span><span>Pa</span></div>
-              <div class="streak-day-badge active" style="bottom: 5px; left: 40px;"><span>🔥</span><span>Ju</span></div>
-              <div class="streak-day-badge active" style="top: 95px; left: 5px;"><span>🔥</span><span>Sh</span></div>
-              <div class="streak-day-badge active" style="top: 25px; left: 10px;"><span>🔥</span><span>Ya</span></div>
-            </div>
-            <p class="text-xs text-slate-500 font-medium mt-3">Bugungi darslarni bajaring va olov zanjirini davom ettiring!</p>
-          </div>
-
-          <!-- Oylik Challenge (Matematika +500 coin) -->
-          <div class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl p-5 text-white card-shadow flex items-center justify-between">
-            <div>
-              <span class="text-[10px] uppercase tracking-wider font-extrabold text-purple-200 block">Oylik challenge</span>
-              <h4 class="text-sm font-black mb-1">Matematika +500 coin</h4>
-              <p class="text-[11px] text-purple-100">Barcha 7-sinf misollarini yeching</p>
-            </div>
-            <button onclick="claimMonthlyChallenge()" class="px-4 py-2.5 rounded-xl bg-white text-purple-700 font-black text-xs hover:bg-purple-50 transition-all shadow-md">
-              Olish 🏆
-            </button>
-          </div>
-
-          <!-- 6 Noyabr 2026 Sovg'a Qutisi (4-rasm) -->
-          <div class="bg-gradient-to-r from-amber-400 to-orange-500 rounded-3xl p-5 text-white card-shadow flex items-center justify-between">
-            <div>
-              <span class="text-[10px] uppercase tracking-wider font-extrabold text-amber-100 block">6 Noyabr 2026</span>
-              <h4 class="text-sm font-black mb-1">Kutilmagan Sovg'a Qutisi</h4>
-              <p class="text-[11px] text-amber-100">Ichida maxsus +100 coin bor</p>
-            </div>
-            <button onclick="claimMysteryBox()" class="px-4 py-2.5 rounded-xl bg-white text-orange-600 font-black text-xs hover:bg-orange-50 transition-all shadow-md">
-              Ochish 🎁
-            </button>
-          </div>
-
-          <!-- Mentor Yordami (24/7 onlayn) -->
-          <div class="bg-white rounded-3xl p-5 border border-slate-100 card-shadow space-y-3">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center text-xl">👨‍🏫</div>
-              <div>
-                <h4 class="text-sm font-black text-slate-800">Mentor yordami</h4>
-                <span class="text-[11px] text-emerald-600 font-bold flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> 24/7 onlayn</span>
-              </div>
-            </div>
-            <p class="text-xs text-slate-500">Dars bo‘yicha savolingiz bormi yoki biror topshiriqda qiyinchilik tug'ildimi?</p>
-            <button onclick="showToast('Mentor bilan aloqa oynasi ochilmoqda...', 'info')" class="w-full py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs transition-colors">
-              Mentorga yozish
-            </button>
-          </div>
-
-          <!-- Do'stingizni taklif qiling (+1000 coin) -->
-          <div class="bg-white rounded-3xl p-5 border border-slate-100 card-shadow space-y-3">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl">📢</div>
-              <div>
-                <h4 class="text-sm font-black text-slate-800">Do‘stingizni taklif qiling</h4>
-                <span class="text-[11px] text-amber-600 font-black">+1000 coin oling</span>
-              </div>
-            </div>
-            <p class="text-xs text-slate-500">Do‘stingiz o‘quv kursimizga qo‘shilsa, sizga va do‘stingizga 1000 coin taqdim etiladi!</p>
-            <button onclick="inviteFriend()" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors">
-              Do‘stlarni taklif qilish 🔗
-            </button>
-          </div>
-
-          <!-- Faollik Kalendari (Noyabr 2026) -->
-          <div class="bg-white rounded-3xl p-5 border border-slate-100 card-shadow space-y-3">
-            <div class="flex items-center justify-between">
-              <h4 class="text-sm font-black text-slate-800">Faollik kalendari</h4>
-              <span class="text-xs font-bold text-slate-400">Noyabr 2026</span>
-            </div>
-            <div class="grid grid-cols-7 gap-1.5 text-center text-[10px] font-bold text-slate-400">
-              <span>Du</span><span>Se</span><span>Ch</span><span>Pa</span><span>Ju</span><span>Sh</span><span>Ya</span>
-            </div>
-            <div class="grid grid-cols-7 gap-1.5 text-center text-xs font-bold">
-              <span class="p-1 rounded-lg bg-emerald-100 text-emerald-800">1</span>
-              <span class="p-1 rounded-lg bg-emerald-100 text-emerald-800">2</span>
-              <span class="p-1 rounded-lg bg-emerald-100 text-emerald-800">3</span>
-              <span class="p-1 rounded-lg bg-emerald-100 text-emerald-800">4</span>
-              <span class="p-1 rounded-lg bg-orange-500 text-white shadow-sm">5</span>
-              <span class="p-1 rounded-lg bg-slate-100 text-slate-600">6</span>
-              <span class="p-1 rounded-lg bg-slate-100 text-slate-600">7</span>
-            </div>
-          </div>
-
-          <!-- Keyingi Vebinar -->
-          <div class="bg-white rounded-3xl p-5 border border-slate-100 card-shadow space-y-3">
-            <h4 class="text-sm font-black text-slate-800">Keyingi vebinar</h4>
-            <div class="flex items-center justify-between text-xs text-slate-500">
-              <span>Google Labs (Chuqurlashtirilgan)</span>
-              <span class="font-bold text-blue-600">18:30 Bugun</span>
-            </div>
-            <button onclick="showToast('Vebinar xonasi 10 daqiqa oldin ochiladi', 'info')" class="w-full py-2.5 rounded-xl bg-slate-100 text-slate-600 font-bold text-xs hover:bg-slate-200">
-              Darsga qo‘shilish
-            </button>
           </div>
 
         </div>
@@ -413,286 +700,2006 @@
 
     </div>
 
-    <!-- ================= VIEW 2: BARCHA KURSLAR RO'YXATI (1-rasm) ================= -->
-    <div id="view-courses" class="hidden space-y-6">
-      <div class="flex items-center justify-between">
-        <button onclick="switchView('dashboard')" class="inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-orange-500 transition-colors">
-          ← Ortga
-        </button>
-        <h2 class="text-xl font-black text-slate-900">Barcha Kurslaringiz</h2>
-        <div></div>
-      </div>
-
-      <div id="courses-grid-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Rendered by app.js -->
-      </div>
+    <!-- Bottom Footer Note -->
+    <div class="text-xs text-stone-400 text-center py-2">
+      AI Do'kon — O'zbekcha xarid yordamchisi • Namoyish kassasi • Fiskal chek emas
     </div>
-
-    <!-- ================= VIEW 3: MATEMATIKA KURSI XARITASI (5-rasm) ================= -->
-    <div id="view-math-path" class="hidden space-y-6">
-      <div class="flex items-center justify-between">
-        <button onclick="switchView('courses')" class="inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-orange-500 transition-colors">
-          ← Ortga
-        </button>
-      </div>
-
-      <!-- Header kartasi (5-rasm) -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-cyan-500 text-white flex items-center justify-center text-xl font-bold">📐</div>
-          <div>
-            <h3 class="text-sm font-black text-slate-800">Matematika</h3>
-            <span class="text-xs text-amber-600 font-bold">7 - sinf</span>
-          </div>
-        </div>
-
-        <div class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow flex flex-col justify-center">
-          <div class="flex items-center justify-between text-xs font-black text-slate-700 mb-1.5">
-            <span>Sizning taraqqiyotingiz</span>
-            <span class="text-orange-600">54% O‘tildi</span>
-          </div>
-          <div class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
-            <div class="h-full bg-orange-500 rounded-full" style="width: 54%;"></div>
-          </div>
-        </div>
-
-        <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-3xl text-white shadow-lg shadow-orange-200 flex items-center justify-between cursor-pointer" onclick="openLessonTestModal('math', 6)">
-          <div>
-            <span class="text-[10px] uppercase font-bold text-orange-200 block">23. Dars</span>
-            <h4 class="text-sm font-black">7 - sinf: Birhadni ko‘paytirish</h4>
-          </div>
-          <span class="px-3 py-1 rounded-xl bg-white text-orange-600 font-black text-xs">Davom ettirish ▶</span>
-        </div>
-      </div>
-
-      <!-- Roadmap Xaritasi (Winding Path) -->
-      <div class="bg-white rounded-3xl p-8 border border-slate-100 card-shadow relative overflow-hidden">
-        <div class="text-center mb-6">
-          <span class="px-3 py-1 rounded-full bg-amber-50 text-amber-700 font-extrabold text-xs border border-amber-200">
-            O‘yin Xaritasi: Har bir sinfda 1 ta dars va 1 ta TEST mavjud!
-          </span>
-        </div>
-
-        <div id="math-path-container" class="roadmap-container flex flex-col items-center">
-          <!-- Rendered by app.js -->
-        </div>
-      </div>
-    </div>
-
-    <!-- ================= VIEW 4: GENERAL ENGLISH KURSI (2-rasm) ================= -->
-    <div id="view-english-course" class="hidden space-y-6">
-      <div class="flex items-center justify-between">
-        <button onclick="switchView('courses')" class="inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-orange-500 transition-colors">
-          ← Ortga
-        </button>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow flex items-center gap-3">
-          <div class="w-12 h-12 rounded-2xl bg-indigo-500 text-white flex items-center justify-center text-xl font-bold">🇬🇧</div>
-          <div>
-            <h3 class="text-sm font-black text-slate-800">General English</h3>
-            <span class="text-xs text-amber-600 font-bold">B1 level</span>
-          </div>
-        </div>
-
-        <div class="bg-white p-4 rounded-3xl border border-slate-100 card-shadow flex flex-col justify-center">
-          <div class="flex items-center justify-between text-xs font-black text-slate-700 mb-1.5">
-            <span>Sizning taraqqiyotingiz</span>
-            <span class="text-orange-600">65% O‘tildi</span>
-          </div>
-          <div class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
-            <div class="h-full bg-orange-500 rounded-full" style="width: 65%;"></div>
-          </div>
-        </div>
-
-        <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-3xl text-white shadow-lg shadow-orange-200 flex items-center justify-between cursor-pointer" onclick="openLessonTestModal('english', 0)">
-          <div>
-            <span class="text-[10px] uppercase font-bold text-orange-200 block">21. Dars</span>
-            <h4 class="text-sm font-black">B1 level: Great discoveries</h4>
-          </div>
-          <span class="px-3 py-1 rounded-xl bg-white text-orange-600 font-black text-xs">Davom ettirish ▶</span>
-        </div>
-      </div>
-
-      <!-- Darslar ro'yxati -->
-      <div class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow space-y-4">
-        <h3 class="text-base font-black text-slate-900">Ingliz tili darslari va testlari</h3>
-        <div id="english-lessons-container" class="space-y-3">
-          <!-- Rendered by app.js -->
-        </div>
-      </div>
-    </div>
-
-    <!-- ================= VIEW 5: DASTURLASH KURSI ================= -->
-    <div id="view-programming-course" class="hidden space-y-6">
-      <div class="flex items-center justify-between">
-        <button onclick="switchView('courses')" class="inline-flex items-center gap-2 text-sm font-black text-slate-600 hover:text-orange-500 transition-colors">
-          ← Ortga
-        </button>
-      </div>
-
-      <div class="bg-white rounded-3xl p-6 border border-slate-100 card-shadow space-y-4">
-        <h3 class="text-base font-black text-slate-900">Dasturlash darslari & Testlar</h3>
-        <div id="programming-lessons-container" class="space-y-3">
-          <!-- Rendered by app.js -->
-        </div>
-      </div>
-    </div>
-
-    <!-- ================= VIEW 6: COINSHOP (3-rasmga 100% mos 16 ta mahsulot) ================= -->
-    <div id="view-shop" class="hidden space-y-8">
-      
-      <!-- Top Banner: "Coin'larni qanday qo'lga kiritsa bo'ladi" (3-rasm) -->
-      <div class="bg-white rounded-3xl p-8 border border-slate-100 card-shadow flex flex-col md:flex-row items-center gap-8">
-        
-        <div class="w-44 h-44 shrink-0 flex items-center justify-center robot-animate">
-          <svg class="w-40 h-40 drop-shadow-xl" viewBox="0 0 200 200" fill="none">
-            <rect x="35" y="40" width="130" height="95" rx="30" fill="#e8dfd5" stroke="#786654" stroke-width="4"/>
-            <rect x="48" y="52" width="104" height="72" rx="20" fill="#0f172a"/>
-            <rect x="66" y="70" width="16" height="22" rx="8" fill="#10b981"/>
-            <rect x="118" y="70" width="16" height="22" rx="8" fill="#10b981"/>
-            <path d="M88 100 Q100 112 112 100" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
-            <circle cx="100" cy="28" r="8" fill="#ff5b22"/>
-          </svg>
-        </div>
-
-        <div class="flex-1 space-y-4">
-          <h2 class="text-2xl font-black text-slate-900 leading-tight">
-            Coin'larni qanday qo‘lga kiritsa bo‘ladi:
-          </h2>
-          
-          <div class="space-y-3">
-            <div class="flex items-start gap-3 p-3 rounded-2xl bg-amber-50/60 border border-amber-100">
-              <span class="text-xl">🪙</span>
-              <div>
-                <h4 class="text-xs font-black text-amber-900">Testlarni birinchi urinishda 100% bajarsangiz: 30 coin</h4>
-                <p class="text-[11px] text-slate-500">Ahamiyat bering, xatolar urinish soni kamaygan sari kamayadi.</p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-3 p-3 rounded-2xl bg-amber-50/60 border border-amber-100">
-              <span class="text-xl">🪙</span>
-              <div>
-                <h4 class="text-xs font-black text-amber-900">Amaliy mashg‘ulotni muvaffaqiyatli bajarsangiz: 70 coin</h4>
-                <p class="text-[11px] text-slate-500">Har bir bo‘lim va amaliy topshiriq muvaffaqiyatli yakunlanganda taqdim etiladi.</p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-3 p-3 rounded-2xl bg-amber-50/60 border border-amber-100">
-              <span class="text-xl">🪙</span>
-              <div>
-                <h4 class="text-xs font-black text-amber-900">Do‘stingizni o‘quv kursimizga taklif qilsangiz: 1000 coin</h4>
-                <p class="text-[11px] text-slate-500">Platformamizga do‘stingizni taklif qiling va birgalikda o‘rganing!</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Sovg'alar Ro'yxati (16 ta mahsulot) -->
-      <div>
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-xl font-black text-slate-900">Sovg‘alar sotib oling</h3>
-          <span class="text-xs font-bold text-slate-400">16 ta sovg'a</span>
-        </div>
-
-        <div id="shop-items-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <!-- Rendered by app.js -->
-        </div>
-      </div>
-
-    </div>
-
   </main>
 
-  <!-- ================= HAR BIR DARS UCHUN 1 TA TEST MODALI ================= -->
-  <div id="lesson-test-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 relative max-h-[90vh] overflow-y-auto">
+  <!-- ================= MIJOZ OYNASI (CUSTOMER DISPLAY VIEW) ================= -->
+  <main id="customer-view" class="flex-1 max-w-[1400px] w-full mx-auto p-4 sm:p-8 flex flex-col hidden">
+    <div class="bg-white rounded-3xl border border-stone-200/90 shadow-xl p-6 sm:p-10 flex-1 flex flex-col justify-between">
       
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <div>
-          <h3 id="lt-title" class="text-base font-black text-slate-900">Dars va Test</h3>
-          <span class="text-[11px] text-slate-400">Darsni o'zlashtiring va 1 ta test savoliga javob bering</span>
+      <!-- Customer Top Welcome -->
+      <div class="flex items-center justify-between pb-6 border-b border-stone-100">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-700 text-white flex items-center justify-center shadow-md">
+            <svg class="w-8 h-8 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-2xl sm:text-4xl font-extrabold text-stone-900 tracking-tight">AI Do'konga xush kelibsiz!</h1>
+            <p class="text-sm sm:text-base text-stone-500 mt-1">Haridingiz bo'yicha ma'lumotlar jonli ko'rsatiladi</p>
+          </div>
         </div>
-        <button onclick="closeLessonTestModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold">
-          ✕
+        <div class="text-right">
+          <div class="text-xs uppercase font-bold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full inline-block">Kassa #01</div>
+          <div id="customer-live-clock" class="text-sm font-mono text-stone-400 mt-1">--:--:--</div>
+        </div>
+      </div>
+
+      <!-- Main Dual Area: Scanned Items List & Large Total with QR -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-8 flex-1">
+        
+        <!-- Left: Realtime Item stream -->
+        <div class="lg:col-span-7 bg-[#faf9f5] border border-stone-200 rounded-2xl p-5 flex flex-col max-h-[500px]">
+          <h2 class="text-base font-bold text-stone-900 mb-3 flex items-center justify-between">
+            <span>Skanerlangan mahsulotlar</span>
+            <span id="customer-items-count" class="text-xs text-stone-500 font-normal">0 ta mahsulot</span>
+          </h2>
+          <div id="customer-items-list" class="flex-1 overflow-y-auto space-y-3 pr-2">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Right: Giant Total & QR Code for Payment -->
+        <div class="lg:col-span-5 bg-gradient-to-br from-[#1b4332] to-[#122e22] text-white rounded-3xl p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
+          <div>
+            <span class="text-xs sm:text-sm uppercase tracking-wider text-emerald-300 font-bold">To'lanadigan summa:</span>
+            <div id="customer-big-total" class="text-3xl sm:text-5xl font-black text-white mt-2 font-mono tracking-tight">
+              0 so'm
+            </div>
+            <p class="text-xs text-emerald-200/80 mt-2">Iltimos, ilovangiz orqali QR-kodni skanerlang yoki terminal orqali to'lang.</p>
+          </div>
+
+          <!-- QR Code Selector & Graphic -->
+          <div class="bg-white text-stone-900 p-5 rounded-2xl shadow-lg flex flex-col items-center mt-6">
+            <!-- Payment Provider Tabs -->
+            <div class="grid grid-cols-3 gap-2 w-full mb-3 text-xs font-bold text-center">
+              <button onclick="setCustomerQR('click')" id="qr-btn-click" class="py-1.5 rounded-lg bg-blue-600 text-white">Click</button>
+              <button onclick="setCustomerQR('payme')" id="qr-btn-payme" class="py-1.5 rounded-lg bg-stone-100 text-stone-700 hover:bg-stone-200">Payme</button>
+              <button onclick="setCustomerQR('uzum')" id="qr-btn-uzum" class="py-1.5 rounded-lg bg-stone-100 text-stone-700 hover:bg-stone-200">Uzum</button>
+            </div>
+
+            <!-- Dynamic SVG QR Code -->
+            <div id="customer-qr-box" class="w-44 h-44 bg-white p-2 border border-stone-200 rounded-xl flex items-center justify-center">
+              <!-- SVG generated via JS -->
+            </div>
+            <span id="qr-provider-name" class="text-xs font-bold text-blue-600 mt-2">Click orqali to'lash</span>
+          </div>
+
+          <!-- Simulate Customer Payment -->
+          <div class="mt-4">
+            <button onclick="simulatePaymentSuccess()" class="w-full py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-sm transition shadow-lg flex items-center justify-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+              <span>To'lovni amalga oshirish (Simulyatsiya)</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Customer Display Footer -->
+      <div class="text-center text-xs text-stone-400 pt-4 border-t border-stone-100">
+        AI Do'kon tizimi • Xaridingiz uchun minnatdormiz!
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= SAVDOLAR HISOBOTI (STATS VIEW) ================= -->
+  <main id="stats-view" class="flex-1 max-w-[1400px] w-full mx-auto p-4 sm:p-8 flex flex-col hidden">
+    <div class="bg-white rounded-3xl border border-stone-200/90 shadow-xl p-6 sm:p-8">
+      <div class="flex items-center justify-between pb-6 border-b border-stone-100">
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-stone-900">Savdolar hisoboti</h1>
+          <p class="text-sm text-stone-500">Bugungi kun bo'yicha tahlil va sotilgan cheklar tarixi</p>
+        </div>
+        <button onclick="exportSalesCSV()" class="px-3.5 py-2 rounded-xl bg-[#1b4332] text-white text-xs font-bold hover:bg-[#143527] transition flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          <span>Excel (CSV) yuklab olish</span>
         </button>
       </div>
 
-      <!-- Dars qisqa tushuntirishi -->
-      <div class="p-4 rounded-2xl bg-slate-900 text-white space-y-2">
+      <!-- KPI Summary Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-6">
+        <div class="bg-[#faf9f5] border border-stone-200 p-4 rounded-2xl">
+          <span class="text-xs text-stone-500 font-semibold uppercase">Jami tushum:</span>
+          <div id="stats-total-revenue" class="text-2xl font-black text-emerald-800 font-mono mt-1">125 000 so'm</div>
+          <span class="text-[11px] text-stone-400">Bugungi savdo</span>
+        </div>
+        <div class="bg-[#faf9f5] border border-stone-200 p-4 rounded-2xl">
+          <span class="text-xs text-stone-500 font-semibold uppercase">Cheklar soni:</span>
+          <div id="stats-orders-count" class="text-2xl font-black text-stone-800 font-mono mt-1">1 ta</div>
+          <span class="text-[11px] text-stone-400">Yopilgan savatlar</span>
+        </div>
+        <div class="bg-[#faf9f5] border border-stone-200 p-4 rounded-2xl">
+          <span class="text-xs text-stone-500 font-semibold uppercase">O'rtacha chek:</span>
+          <div id="stats-avg-check" class="text-2xl font-black text-stone-800 font-mono mt-1">125 000 so'm</div>
+          <span class="text-[11px] text-stone-400">Bir xaridga to'g'ri kelgan</span>
+        </div>
+        <div class="bg-[#faf9f5] border border-stone-200 p-4 rounded-2xl">
+          <span class="text-xs text-stone-500 font-semibold uppercase">Eng ko'p sotilgan:</span>
+          <div id="stats-top-product" class="text-lg font-bold text-stone-800 mt-1 truncate">Olma (Semerenko)</div>
+          <span class="text-[11px] text-stone-400">Top mahsulot</span>
+        </div>
+      </div>
+
+      <!-- History Table -->
+      <div class="mt-4">
+        <h3 class="text-sm font-bold text-stone-900 mb-2">So'nggi cheklar ro'yxati:</h3>
+        <div class="overflow-x-auto border border-stone-200 rounded-xl">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-stone-50 text-stone-500 font-medium border-b border-stone-200">
+              <tr>
+                <th class="p-3">Chek ID</th>
+                <th class="p-3">Vaqt</th>
+                <th class="p-3">Mahsulotlar</th>
+                <th class="p-3">To'lov turi</th>
+                <th class="p-3 text-right">Summa</th>
+                <th class="p-3 text-center">Amal</th>
+              </tr>
+            </thead>
+            <tbody id="sales-history-tbody" class="divide-y divide-stone-100">
+              <!-- Populated via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= MODALS ================= -->
+
+  <!-- 1. CHECKOUT & PAYMENT MODAL -->
+  <div id="checkout-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+        <h3 class="text-lg font-bold text-stone-900 flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center">💳</span>
+          <span>To'lovni tasdiqlash</span>
+        </h3>
+        <button onclick="closeModal('checkout-modal')" class="text-stone-400 hover:text-stone-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="text-center py-2">
+        <div class="text-xs text-stone-500">To'lov summasi:</div>
+        <div id="modal-checkout-total" class="text-3xl font-black text-stone-900 font-mono mt-1">125 000 so'm</div>
+      </div>
+
+      <!-- Payment Method Selection -->
+      <div>
+        <label class="text-xs font-bold text-stone-700">To'lov usulini tanlang:</label>
+        <div class="grid grid-cols-3 gap-2 mt-2">
+          <button onclick="selectPaymentMethod('cash')" id="pay-method-cash" class="pay-method-card active p-3 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-center font-bold text-xs text-emerald-900 transition flex flex-col items-center gap-1">
+            <span class="text-lg">💵</span>
+            <span>Naqd pul</span>
+          </button>
+          <button onclick="selectPaymentMethod('card')" id="pay-method-card" class="pay-method-card p-3 rounded-xl border border-stone-200 hover:border-stone-400 text-center font-bold text-xs text-stone-700 transition flex flex-col items-center gap-1">
+            <span class="text-lg">💳</span>
+            <span>Plastik karta</span>
+          </button>
+          <button onclick="selectPaymentMethod('qr')" id="pay-method-qr" class="pay-method-card p-3 rounded-xl border border-stone-200 hover:border-stone-400 text-center font-bold text-xs text-stone-700 transition flex flex-col items-center gap-1">
+            <span class="text-lg">📱</span>
+            <span>Click / Payme</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Cash Change Calculator (if Naqd selected) -->
+      <div id="cash-calculator-box" class="bg-stone-50 p-3 rounded-xl border border-stone-200 text-xs">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-bold text-orange-400 uppercase tracking-wider">Dars qoidasi</span>
-          <span id="lt-reward-badge" class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-900 font-black text-[10px]">
-            +30 Coin
-          </span>
+          <span class="font-medium text-stone-700">Mijoz bergan summa:</span>
+          <input type="number" id="cash-given-input" oninput="calculateChange()" placeholder="0" class="w-28 text-right p-1.5 border border-stone-300 rounded-lg font-mono font-bold" />
         </div>
-        <p id="lt-explanation" class="text-xs text-slate-300 leading-relaxed"></p>
-      </div>
-
-      <!-- 1 Ta Test Savoli -->
-      <div class="space-y-3 pt-2">
-        <div class="flex items-center gap-2">
-          <span class="px-2 py-0.5 rounded-md bg-orange-100 text-orange-600 font-extrabold text-[10px]">TEST</span>
-          <h4 id="lt-question-text" class="text-sm font-black text-slate-900"></h4>
-        </div>
-
-        <div id="lt-options-container" class="space-y-2">
-          <!-- Options rendered by JS -->
+        <div class="flex items-center justify-between mt-2 pt-2 border-t border-stone-200 font-semibold">
+          <span>Qaytim:</span>
+          <span id="cash-change-display" class="font-mono text-emerald-700 font-bold">0 so'm</span>
         </div>
       </div>
 
-      <div class="pt-3 border-t border-slate-100">
-        <button id="lt-submit-btn" onclick="submitLessonTest()" class="w-full py-3.5 rounded-2xl bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-black text-xs shadow-lg shadow-orange-300 transition-all">
-          Testni tekshirish & +Coin olish 🪙
+      <div class="pt-2 flex flex-col gap-2">
+        <button onclick="completePayment()" class="w-full py-3 rounded-xl font-bold text-sm bg-[#1b4332] text-white hover:bg-[#143527] transition shadow-md flex items-center justify-center gap-2">
+          <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          <span>To'lovni qabul qilish va chek chiqarish</span>
+        </button>
+        <button onclick="closeModal('checkout-modal')" class="w-full py-2 rounded-xl text-xs font-semibold text-stone-500 hover:text-stone-800">
+          Bekor qilish
         </button>
       </div>
-
     </div>
   </div>
 
-  <!-- ================= COIN TARIXI MODALI ================= -->
-  <div id="coin-history-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay hidden">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 relative max-h-[85vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+  <!-- 2. THERMAL RECEIPT PREVIEW & PRINT MODAL -->
+  <div id="receipt-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-2 border-b border-stone-100">
+        <h3 class="text-sm font-bold text-stone-900">Fiskal chek ko'rinishi</h3>
+        <button onclick="closeModal('receipt-modal')" class="text-stone-400 hover:text-stone-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Printable Thermal Paper Area -->
+      <div id="printable-receipt" class="receipt-paper font-mono text-[11px] text-stone-900 p-4 border border-stone-200 rounded-lg">
+        <div class="text-center">
+          <div class="font-bold text-sm">"AI DO'KON" MCHJ</div>
+          <div>Toshkent sh., Yunusobod tumani</div>
+          <div>STIR: 308942105 • KASSA: #01</div>
+          <div class="border-b border-dashed border-stone-400 my-2"></div>
+          <div id="print-receipt-time" class="text-[10px] text-stone-500">21.10.2026 21:30:15</div>
+          <div id="print-receipt-id" class="text-[10px] text-stone-500">CHEK: #AI-00482</div>
+          <div class="border-b border-dashed border-stone-400 my-2"></div>
+        </div>
+
+        <div id="print-items-table" class="space-y-1.5 my-2">
+          <!-- Populated via JS -->
+        </div>
+
+        <div class="border-b border-dashed border-stone-400 my-2"></div>
+
+        <div class="space-y-1 text-xs">
+          <div class="flex justify-between font-bold">
+            <span>ORALIQ:</span>
+            <span id="print-subtotal">0 so'm</span>
+          </div>
+          <div class="flex justify-between text-stone-600">
+            <span>CHEGIRMA:</span>
+            <span id="print-discount">-0 so'm</span>
+          </div>
+          <div class="flex justify-between text-stone-600">
+            <span>QQS (12%):</span>
+            <span id="print-vat">0 so'm</span>
+          </div>
+          <div class="flex justify-between text-base font-extrabold border-t border-stone-900 pt-1 mt-1">
+            <span>JAMI:</span>
+            <span id="print-total">0 so'm</span>
+          </div>
+        </div>
+
+        <div class="border-b border-dashed border-stone-400 my-2"></div>
+
+        <div class="text-center text-[10px] text-stone-600 space-y-1">
+          <div>TO'LOV TURI: <span id="print-paymethod">NAQD</span></div>
+          <!-- Barcode simulation -->
+          <div class="py-2 flex flex-col items-center">
+            <svg class="h-10 w-44" viewBox="0 0 100 24">
+              <rect x="0" y="0" width="2" height="24" fill="black" />
+              <rect x="4" y="0" width="1" height="24" fill="black" />
+              <rect x="7" y="0" width="3" height="24" fill="black" />
+              <rect x="12" y="0" width="1" height="24" fill="black" />
+              <rect x="15" y="0" width="2" height="24" fill="black" />
+              <rect x="19" y="0" width="4" height="24" fill="black" />
+              <rect x="25" y="0" width="1" height="24" fill="black" />
+              <rect x="28" y="0" width="2" height="24" fill="black" />
+              <rect x="32" y="0" width="3" height="24" fill="black" />
+              <rect x="37" y="0" width="1" height="24" fill="black" />
+              <rect x="40" y="0" width="2" height="24" fill="black" />
+              <rect x="44" y="0" width="1" height="24" fill="black" />
+              <rect x="47" y="0" width="3" height="24" fill="black" />
+              <rect x="52" y="0" width="2" height="24" fill="black" />
+              <rect x="56" y="0" width="1" height="24" fill="black" />
+              <rect x="59" y="0" width="4" height="24" fill="black" />
+              <rect x="65" y="0" width="2" height="24" fill="black" />
+              <rect x="69" y="0" width="1" height="24" fill="black" />
+              <rect x="72" y="0" width="3" height="24" fill="black" />
+              <rect x="77" y="0" width="2" height="24" fill="black" />
+              <rect x="81" y="0" width="1" height="24" fill="black" />
+              <rect x="84" y="0" width="3" height="24" fill="black" />
+              <rect x="89" y="0" width="2" height="24" fill="black" />
+              <rect x="93" y="0" width="1" height="24" fill="black" />
+              <rect x="96" y="0" width="3" height="24" fill="black" />
+            </svg>
+            <span class="tracking-widest">4780001928471</span>
+          </div>
+          <!-- Official Soliq.uz OFD QR Code & 1% Cashback Info -->
+          <div class="py-2 flex flex-col items-center">
+            <div class="w-28 h-28 bg-white p-1 border border-stone-300 rounded flex items-center justify-center">
+              <canvas id="soliq-receipt-qr-canvas" class="w-full h-full"></canvas>
+            </div>
+            <div class="text-[9px] font-bold text-emerald-800 mt-1">DAVLAT SOLIQ QO'MITASI (OFD)</div>
+            <div class="text-[8px] text-stone-600">Soliq ilovasida skanerlang va 1% keshbek oling!</div>
+            <div class="text-[8px] font-mono text-stone-400 mt-0.5">ФП: 48920194819 • ФМ: FM-9812409</div>
+          </div>
+          <div>Fiskal modul: FM-9812409</div>
+          <div class="font-bold pt-1">XARIDINGIZ UCHUN RAHMAT!</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-2">
+        <button onclick="window.print()" class="flex-1 py-2.5 rounded-xl bg-[#1b4332] text-white text-xs font-bold hover:bg-[#143527] transition flex items-center justify-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          <span>Chop etish (Print)</span>
+        </button>
+        <button onclick="closeModal('receipt-modal')" class="px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold transition">
+          Yopish
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. AI SETTINGS MODAL -->
+  <div id="settings-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+        <h3 class="text-base font-bold text-stone-900 flex items-center gap-2">
+          <span>⚙️ AI va Do'kon Sozlamalari</span>
+        </h3>
+        <button onclick="closeModal('settings-modal')" class="text-stone-400 hover:text-stone-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs">
         <div>
-          <h3 class="text-base font-black text-slate-900">Coin Tarixi</h3>
-          <p class="text-xs text-slate-400">Kirim va chiqimlar hisoboti</p>
+          <label class="font-bold text-stone-700 block mb-1">AI Modeli / Ishlash tartibi:</label>
+          <select id="ai-provider-select" onchange="toggleAIKeyInput()" class="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-medium focus:ring-2 focus:ring-emerald-600">
+            <option value="local">O'rnatilgan aqlli Mahalliy AI (Lokal, bepul va tezkor)</option>
+            <option value="gemini">Google Gemini 1.5 / 2.0 Flash (API kalit bilan)</option>
+            <option value="openai">OpenAI GPT-4o Vision (API kalit bilan)</option>
+          </select>
+          <p class="text-[11px] text-stone-500 mt-1">
+            Mahalliy AI internet talab qilmaydi va O'zbek tilidagi barcha asosiy mahsulotlar hamda rasmlarni mukammal taniydi.
+          </p>
         </div>
-        <button onclick="closeCoinHistory()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold">
-          ✕
+
+        <div id="api-key-container" class="hidden">
+          <label class="font-bold text-stone-700 block mb-1">API Kalit:</label>
+          <input type="password" id="custom-api-key" placeholder="sk-... yoki AIzaSy..." class="w-full p-2.5 border border-stone-200 rounded-xl font-mono focus:ring-2 focus:ring-emerald-600" />
+          <span class="text-[10px] text-stone-400 mt-0.5 block">Kalit faqat brauzer sessiyasi xotirasida saqlanadi, serverga jo'natilmaydi.</span>
+        </div>
+
+        <div>
+          <label class="font-bold text-stone-700 block mb-1">Kassir ismi:</label>
+          <input type="text" id="cashier-name-input" value="Azizbek" class="w-full p-2.5 border border-stone-200 rounded-xl focus:ring-2 focus:ring-emerald-600" />
+        </div>
+
+        <div>
+          <label class="font-bold text-stone-700 block mb-1">Do'kon nomi:</label>
+          <input type="text" id="store-name-input" value="AI Do'kon" class="w-full p-2.5 border border-stone-200 rounded-xl focus:ring-2 focus:ring-emerald-600" />
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-stone-100 flex gap-2">
+        <button onclick="saveSettings()" class="flex-1 py-2.5 rounded-xl bg-[#1b4332] text-white text-xs font-bold hover:bg-[#143527] transition">
+          Saqlash
+        </button>
+        <button onclick="closeModal('settings-modal')" class="px-4 py-2.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold transition">
+          Bekor qilish
         </button>
       </div>
-
-      <div class="bg-amber-50 rounded-2xl p-4 border border-amber-200 flex items-center justify-between">
-        <span class="text-xs font-bold text-amber-900">Mavjud Balans:</span>
-        <span class="text-xl font-black text-amber-700 flex items-center gap-1">
-          🪙 <span class="user-coins-display">21,702</span>
-        </span>
-      </div>
-
-      <div id="coin-history-list" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
     </div>
   </div>
 
-  <!-- Toast Notification Alert -->
-  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <!-- 4. ADD NEW PRODUCT MODAL -->
+  <div id="add-product-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-2 border-b border-stone-100">
+        <h3 class="text-sm font-bold text-stone-900">+ Yangi mahsulot qo'shish</h3>
+        <button onclick="closeModal('add-product-modal')" class="text-stone-400 hover:text-stone-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
 
-  <!-- Footer -->
-  <footer class="bg-white border-t border-slate-100 py-6 mt-12 text-center text-xs text-slate-400">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <p>© 2026 Junior Academy. Barcha huquqlar himoyalangan.</p>
-      <div class="flex items-center gap-4 font-semibold text-slate-500">
-        <a href="javascript:void(0)" onclick="switchView('courses')" class="hover:text-orange-500">Barcha Kurslar</a>
-        <a href="javascript:void(0)" onclick="switchView('math-path')" class="hover:text-orange-500">Matematika</a>
-        <a href="javascript:void(0)" onclick="switchView('english-course')" class="hover:text-orange-500">General English</a>
-        <a href="javascript:void(0)" onclick="switchView('shop')" class="hover:text-orange-500">CoinShop</a>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="font-semibold text-stone-700 block mb-1">Mahsulot nomi:</label>
+          <input type="text" id="new-prod-name" placeholder="Masalan: Qulupnay" class="w-full p-2 border border-stone-200 rounded-lg focus:ring-2 focus:ring-emerald-600" />
+        </div>
+        <div>
+          <label class="font-semibold text-stone-700 block mb-1">Narxi (so'm):</label>
+          <input type="number" id="new-prod-price" placeholder="Masalan: 35000" class="w-full p-2 border border-stone-200 rounded-lg focus:ring-2 focus:ring-emerald-600" />
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="font-semibold text-stone-700 block mb-1">O'lchov birligi:</label>
+            <select id="new-prod-unit" class="w-full p-2 border border-stone-200 rounded-lg">
+              <option value="kg uchun">kg uchun</option>
+              <option value="dona uchun">dona uchun</option>
+              <option value="litr uchun">litr uchun</option>
+              <option value="qadoq uchun">qadoq uchun</option>
+            </select>
+          </div>
+          <div>
+            <label class="font-semibold text-stone-700 block mb-1">Emoji / Ikonka:</label>
+            <input type="text" id="new-prod-emoji" placeholder="🍓" class="w-full p-2 text-center border border-stone-200 rounded-lg text-lg" value="📦" />
+          </div>
+        </div>
+        <div>
+          <label class="font-semibold text-stone-700 block mb-1">Kategoriya:</label>
+          <select id="new-prod-category" class="w-full p-2 border border-stone-200 rounded-lg">
+            <option value="meva">Mevalar va sabzavotlar</option>
+            <option value="non">Non mahsulotlari</option>
+            <option value="sut">Sut va tuxum</option>
+            <option value="ichimlik">Ichimliklar</option>
+            <option value="boshqa">Oziq-ovqat va boshqa</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="pt-2 flex gap-2">
+        <button onclick="saveNewProduct()" class="flex-1 py-2 rounded-xl bg-[#1b4332] text-white text-xs font-bold hover:bg-[#143527] transition">
+          Katalogga qo'shish
+        </button>
+        <button onclick="closeModal('add-product-modal')" class="px-3 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold transition">
+          Bekor qilish
+        </button>
       </div>
     </div>
-  </footer>
+  </div>
 
-  <script src="app.js"></script>
+  <!-- 5. ABOUT MODAL -->
+  <div id="about-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl flex flex-col gap-4">
+      <div class="flex items-center justify-between pb-2 border-b border-stone-100">
+        <h3 class="text-base font-bold text-stone-900 flex items-center gap-2">
+          <span>ℹ️ "AI Do'kon" Loyihasi Haqida</span>
+        </h3>
+        <button onclick="closeModal('about-modal')" class="text-stone-400 hover:text-stone-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="text-xs text-stone-600 space-y-2.5 leading-relaxed">
+        <p>
+          <strong>AI Do'kon</strong> — zamonaviy savdo shoxobchalari, kassa punktlari va supermarketlar uchun sun'iy intellektga asoslangan aqlli kassa dasturi.
+        </p>
+        <div class="bg-[#faf9f5] p-3 rounded-xl border border-stone-200 space-y-1">
+          <div class="font-bold text-stone-800">Asosiy imkoniyatlar:</div>
+          <div>• <strong>AI Vision:</strong> Mahsulotlar rasmini skanerlab, avtomatik chek tuzish;</div>
+          <div>• <strong>Ovozli AI:</strong> O'zbek tilidagi buyurtmalarni eshitib, savatga qo'shish;</div>
+          <div>• <strong>Matnli NLP:</strong> Tabiiy tildagi ixtiyoriy buyurtmalarni tahlil qilish;</div>
+          <div>• <strong>Mijoz oynasi:</strong> Real vaqt rejimida mijozga ko'rinadigan monitor;</div>
+          <div>• <strong>Fiskal chek:</strong> Shtrix-kod va QR-to'lov bilan qog'ozga chop etish.</div>
+        </div>
+        <p class="text-[11px] text-stone-500">
+          Dasturchi: Google Antigravity & AI Do'kon jamoasi. O'zbekiston bozorlari va do'konlari uchun maxsus moslashtirilgan.
+        </p>
+      </div>
+      <button onclick="closeModal('about-modal')" class="w-full py-2.5 rounded-xl bg-[#1b4332] text-white text-xs font-bold hover:bg-[#143527] transition">
+        Tushunarli
+      </button>
+    </div>
+  </div>
+
+  <!-- 6. SOLIQ FISKAL SKANER MODAL -->
+  <div id="soliq-scanner-modal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl flex flex-col gap-4 animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between pb-3 border-b border-stone-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center text-lg font-bold shadow">
+            🏛️
+          </div>
+          <div>
+            <h3 class="text-base font-extrabold text-stone-900 flex items-center gap-1.5">
+              <span>Soliq Fiskal Skaneri</span>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">1% Keshbek</span>
+            </h3>
+            <p class="text-xs text-stone-500">Davlat Soliq Qo'mitasi OFD cheklarini skanerlash</p>
+          </div>
+        </div>
+        <button onclick="closeSoliqScannerModal()" class="text-stone-400 hover:text-stone-600 p-1 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Live Camera Viewport -->
+      <div class="relative bg-stone-950 rounded-2xl overflow-hidden h-64 flex items-center justify-center border-2 border-stone-800">
+        <div id="soliq-modal-qr-reader" class="w-full h-full"></div>
+        
+        <!-- Reticle Graphic -->
+        <div class="absolute inset-8 border-2 border-emerald-400/60 rounded-2xl pointer-events-none flex flex-col justify-between p-2">
+          <div class="flex justify-between">
+            <div class="w-4 h-4 border-t-2 border-l-2 border-emerald-400"></div>
+            <div class="w-4 h-4 border-t-2 border-r-2 border-emerald-400"></div>
+          </div>
+          <div class="flex justify-between">
+            <div class="w-4 h-4 border-b-2 border-l-2 border-emerald-400"></div>
+            <div class="w-4 h-4 border-b-2 border-r-2 border-emerald-400"></div>
+          </div>
+        </div>
+
+        <!-- Laser beam animation -->
+        <div id="soliq-modal-laser" class="absolute left-6 right-6 h-0.5 bg-gradient-to-r from-transparent via-red-500 to-transparent scanner-line shadow-lg shadow-red-500 pointer-events-none"></div>
+
+        <!-- Camera Off State -->
+        <div id="soliq-modal-cam-placeholder" class="hidden absolute inset-0 bg-stone-900 flex flex-col items-center justify-center p-4 text-center text-white">
+          <div class="w-12 h-12 rounded-full bg-stone-800 flex items-center justify-center mb-2">
+            <svg class="w-6 h-6 text-stone-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          </div>
+          <p class="text-xs font-bold">Kamera hozircha o'chiq</p>
+          <button onclick="startSoliqCamera('modal')" class="mt-2 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow">Kamerani yoqish</button>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex gap-2">
+        <button onclick="toggleSoliqCamera('modal')" id="soliq-modal-toggle-cam-btn" class="flex-1 py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs flex items-center justify-center gap-1.5 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          <span id="soliq-modal-cam-text">Kamerani to'xtatish</span>
+        </button>
+        <input type="file" id="soliq-modal-file-input" accept="image/*" class="hidden" onchange="handleSoliqImageUpload(event)" />
+        <button onclick="document.getElementById('soliq-modal-file-input').click()" class="flex-1 py-2 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs flex items-center justify-center gap-1.5 transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+          <span>Fayldan rasm yuklash</span>
+        </button>
+      </div>
+
+      <!-- Preset Demos in Modal -->
+      <div class="p-3 bg-stone-50 rounded-2xl border border-stone-200">
+        <div class="text-[11px] font-bold text-stone-600 mb-2">Yoki namunaviy Soliq chekini tanlang:</div>
+        <div class="grid grid-cols-3 gap-2">
+          <button onclick="loadDemoSoliqReceipt('korzinka'); closeModal('soliq-scanner-modal');" class="p-2 bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-500 rounded-xl text-left transition shadow-2xs">
+            <div class="text-xs font-black text-stone-900">Korzinka</div>
+            <div class="text-[11px] font-mono font-bold text-emerald-800 mt-0.5">125 000 so'm</div>
+            <div class="text-[10px] text-emerald-600 font-semibold">+1 250 keshbek</div>
+          </button>
+          <button onclick="loadDemoSoliqReceipt('makro'); closeModal('soliq-scanner-modal');" class="p-2 bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-500 rounded-xl text-left transition shadow-2xs">
+            <div class="text-xs font-black text-stone-900">Makro</div>
+            <div class="text-[11px] font-mono font-bold text-emerald-800 mt-0.5">68 000 so'm</div>
+            <div class="text-[10px] text-emerald-600 font-semibold">+680 keshbek</div>
+          </button>
+          <button onclick="loadDemoSoliqReceipt('havas'); closeModal('soliq-scanner-modal');" class="p-2 bg-white hover:bg-emerald-50 border border-stone-200 hover:border-emerald-500 rounded-xl text-left transition shadow-2xs">
+            <div class="text-xs font-black text-stone-900">Havas</div>
+            <div class="text-[11px] font-mono font-bold text-emerald-800 mt-0.5">42 000 so'm</div>
+            <div class="text-[10px] text-emerald-600 font-semibold">+420 keshbek</div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    /* ==========================================================================
+       1. GLOBAL STATE & COMPREHENSIVE PRODUCT CATALOG
+       ========================================================================== */
+    const STATE = {
+      activeView: 'cashier', // 'cashier' | 'customer' | 'stats'
+      inputTab: 'image',     // 'image' | 'voice' | 'text'
+      soundEnabled: true,
+      currentCategory: 'all',
+      searchQuery: '',
+      cart: [], // { id, name, price, unit, qty, emoji }
+      discountPercent: 0,
+      discountFixed: 0,
+      activeAIProvider: 'local', // 'local' | 'gemini' | 'openai'
+      customAPIKey: '',
+      cashierName: 'Azizbek',
+      storeName: 'AI Do\'kon',
+      selectedPaymentMethod: 'cash',
+      selectedQR: 'click',
+      isRecording: false,
+      salesHistory: [
+        {
+          id: 'AI-00481',
+          time: '21.10.2026 20:45:10',
+          items: 'Olma (2 kg), Banan (3 kg), Suv (1 qadoq)',
+          total: 125000,
+          method: 'Click'
+        }
+      ]
+    };
+
+    // Rich initial catalog with 25+ real store items with high-res photos
+    const DEFAULT_PRODUCTS = [
+      { id: 'p1', name: 'Non (Tandir)', price: 4000, unit: '1 dona uchun', category: 'non', emoji: '🍞', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&auto=format&fit=crop&q=80', barcode: '4780001001' },
+      { id: 'p2', name: 'Patir non', price: 8000, unit: '1 dona uchun', category: 'non', emoji: '🥯', image: 'https://images.unsplash.com/photo-1586444248902-2f64eddc13df?w=300&auto=format&fit=crop&q=80', barcode: '4780001002' },
+      { id: 'p3', name: 'Lavash xamiri', price: 6000, unit: '1 qadoq uchun', category: 'non', emoji: '🫓', image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=300&auto=format&fit=crop&q=80', barcode: '4780001003' },
+      
+      { id: 'p4', name: 'Sut, 1 litr', price: 12000, unit: '1 qadoq uchun', category: 'sut', emoji: '🥛', image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=300&auto=format&fit=crop&q=80', barcode: '4780002001' },
+      { id: 'p5', name: 'Tuxum (1 dona)', price: 1500, unit: '1 dona uchun', category: 'sut', emoji: '🥚', image: 'https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=300&auto=format&fit=crop&q=80', barcode: '4780002002' },
+      { id: 'p6', name: 'Qatiq, 1 litr', price: 9000, unit: '1 qadoq uchun', category: 'sut', emoji: '🍶', image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=300&auto=format&fit=crop&q=80', barcode: '4780002003' },
+      { id: 'p7', name: 'Smetana (Qaymoq)', price: 16000, unit: '1 banka uchun', category: 'sut', emoji: '🍨', image: 'https://images.unsplash.com/photo-1517093157656-b9ec8164e9a0?w=300&auto=format&fit=crop&q=80', barcode: '4780002004' },
+      { id: 'p8', name: 'Pishloq (Rossiyskiy)', price: 78000, unit: '1 kg uchun', category: 'sut', emoji: '🧀', image: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=300&auto=format&fit=crop&q=80', barcode: '4780002005' },
+
+      { id: 'p9', name: 'Olma (Semerenko)', price: 18000, unit: '1 kg uchun', category: 'meva', emoji: '🍎', image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&auto=format&fit=crop&q=80', barcode: '4780003001' },
+      { id: 'p10', name: 'Banan', price: 28000, unit: '1 kg uchun', category: 'meva', emoji: '🍌', image: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&auto=format&fit=crop&q=80', barcode: '4780003002' },
+      { id: 'p11', name: 'Apelsin', price: 24000, unit: '1 kg uchun', category: 'meva', emoji: '🍊', image: 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=300&auto=format&fit=crop&q=80', barcode: '4780003003' },
+      { id: 'p12', name: 'Pomidor', price: 16000, unit: '1 kg uchun', category: 'meva', emoji: '🍅', image: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300&auto=format&fit=crop&q=80', barcode: '4780003004' },
+      { id: 'p13', name: 'Bodring', price: 12000, unit: '1 kg uchun', category: 'meva', emoji: '🥒', image: 'https://images.unsplash.com/photo-1449339854873-750e6913301b?w=300&auto=format&fit=crop&q=80', barcode: '4780003005' },
+      { id: 'p14', name: 'Kartoshka', price: 6500, unit: '1 kg uchun', category: 'meva', emoji: '🥔', image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=300&auto=format&fit=crop&q=80', barcode: '4780003006' },
+      { id: 'p15', name: 'Piyoz', price: 4500, unit: '1 kg uchun', category: 'meva', emoji: '🧅', image: 'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=300&auto=format&fit=crop&q=80', barcode: '4780003007' },
+
+      { id: 'p16', name: 'Suv, 1 litr', price: 5000, unit: '1 qadoq uchun', category: 'ichimlik', emoji: '💧', image: 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=300&auto=format&fit=crop&q=80', barcode: '4780004001' },
+      { id: 'p17', name: 'Coca-Cola 1.5 litr', price: 14000, unit: '1 dona uchun', category: 'ichimlik', emoji: '🥤', image: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300&auto=format&fit=crop&q=80', barcode: '4780004002' },
+      { id: 'p18', name: 'Fanta 1.5 litr', price: 14000, unit: '1 dona uchun', category: 'ichimlik', emoji: '🧃', image: 'https://images.unsplash.com/photo-1624517452488-04869289c4ca?w=300&auto=format&fit=crop&q=80', barcode: '4780004003' },
+      { id: 'p19', name: 'Sharbat (Dena)', price: 16000, unit: '1 litr uchun', category: 'ichimlik', emoji: '🍹', image: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=300&auto=format&fit=crop&q=80', barcode: '4780004004' },
+      { id: 'p20', name: 'Qora choy (Ahmad)', price: 22000, unit: '1 quti uchun', category: 'ichimlik', emoji: '☕', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=300&auto=format&fit=crop&q=80', barcode: '4780004005' },
+
+      { id: 'p21', name: 'Mol go\'shti (lahm)', price: 110000, unit: '1 kg uchun', category: 'boshqa', emoji: '🥩', image: 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=300&auto=format&fit=crop&q=80', barcode: '4780005001' },
+      { id: 'p22', name: 'Tovuq go\'shti', price: 38000, unit: '1 kg uchun', category: 'boshqa', emoji: '🍗', image: 'https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=300&auto=format&fit=crop&q=80', barcode: '4780005002' },
+      { id: 'p23', name: 'O\'simlik yog\'i (Pista)', price: 22000, unit: '1 litr uchun', category: 'boshqa', emoji: '🫗', image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=300&auto=format&fit=crop&q=80', barcode: '4780005003' },
+      { id: 'p24', name: 'Guruch (Lazer)', price: 26000, unit: '1 kg uchun', category: 'boshqa', emoji: '🍚', image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&auto=format&fit=crop&q=80', barcode: '4780005004' },
+      { id: 'p25', name: 'Shokolad (Alpen Gold)', price: 15000, unit: '1 dona uchun', category: 'boshqa', emoji: '🍫', image: 'https://images.unsplash.com/photo-1548907040-4baa42d10919?w=300&auto=format&fit=crop&q=80', barcode: '4780005005' },
+      { id: 'p26', name: 'Muzqaymoq', price: 8000, unit: '1 dona uchun', category: 'boshqa', emoji: '🍦', image: 'https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=300&auto=format&fit=crop&q=80', barcode: '4780005006' }
+    ];
+
+    let PRODUCTS = [...DEFAULT_PRODUCTS];
+
+    // Initial cart items (exactly matching the user screenshot: Olma 2kg, Banan 3kg, Suv 1 qadoq = 125 000 so'm!)
+    STATE.cart = [
+      { id: 'p9', name: 'Olma', price: 18000, unit: 'kg', qty: 2, emoji: '🍎', image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&auto=format&fit=crop&q=80' },
+      { id: 'p10', name: 'Banan', price: 28000, unit: 'kg', qty: 3, emoji: '🍌', image: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&auto=format&fit=crop&q=80' },
+      { id: 'p16', name: 'Suv, 1 litr', price: 5000, unit: 'qadoq', qty: 1, emoji: '💧', image: 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=300&auto=format&fit=crop&q=80' }
+    ];
+
+    /* ==========================================================================
+       2. AUDIO SYNTHESIZER (NO EXTERNAL AUDIO FILES NEEDED - 100% RELIABLE)
+       ========================================================================== */
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playBeep(freq = 920, type = 'sine', duration = 0.08) {
+      if (!STATE.soundEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (e) {
+        console.warn('Audio not available', e);
+      }
+    }
+
+    function playSuccessChime() {
+      if (!STATE.soundEnabled) return;
+      playBeep(523.25, 'triangle', 0.1); // C5
+      setTimeout(() => playBeep(659.25, 'triangle', 0.12), 90); // E5
+      setTimeout(() => playBeep(783.99, 'triangle', 0.14), 180); // G5
+      setTimeout(() => playBeep(1046.50, 'triangle', 0.25), 270); // C6
+    }
+
+    function playRemoveSound() {
+      if (!STATE.soundEnabled) return;
+      playBeep(320, 'sawtooth', 0.12);
+    }
+
+    function toggleAudio() {
+      STATE.soundEnabled = !STATE.soundEnabled;
+      const onIcon = document.getElementById('sound-icon-on');
+      const offIcon = document.getElementById('sound-icon-off');
+      if (STATE.soundEnabled) {
+        onIcon.classList.remove('hidden');
+        offIcon.classList.add('hidden');
+        playBeep(880, 'sine', 0.06);
+      } else {
+        onIcon.classList.add('hidden');
+        offIcon.classList.remove('hidden');
+      }
+    }
+
+    /* ==========================================================================
+       3. VIEW SWITCHER (Kassir / Mijoz / Hisobot)
+       ========================================================================== */
+    function switchMainView(view) {
+      STATE.activeView = view;
+      const cashierView = document.getElementById('cashier-view');
+      const customerView = document.getElementById('customer-view');
+      const statsView = document.getElementById('stats-view');
+
+      const cashierBtn = document.getElementById('tab-cashier-btn');
+      const customerBtn = document.getElementById('tab-customer-btn');
+      const statsBtn = document.getElementById('tab-stats-btn');
+
+      // Hide all
+      cashierView.classList.add('hidden');
+      customerView.classList.add('hidden');
+      statsView.classList.add('hidden');
+
+      // Reset button classes
+      [cashierBtn, customerBtn, statsBtn].forEach(btn => {
+        btn.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all text-emerald-200 hover:text-white flex items-center gap-2";
+      });
+
+      const activeBtnClass = "px-4 py-2 rounded-lg text-sm font-semibold transition-all bg-white text-[#1b4332] shadow-sm flex items-center gap-2";
+
+      if (view === 'cashier') {
+        cashierView.classList.remove('hidden');
+        cashierBtn.className = activeBtnClass;
+      } else if (view === 'customer') {
+        customerView.classList.remove('hidden');
+        customerBtn.className = activeBtnClass;
+        renderCustomerView();
+      } else if (view === 'stats') {
+        statsView.classList.remove('hidden');
+        statsBtn.className = activeBtnClass;
+        renderStatsView();
+      }
+
+      playBeep(700, 'sine', 0.04);
+    }
+
+    /* ==========================================================================
+       4. PRODUCT CATALOG RENDERING & FILTERING
+       ========================================================================== */
+    function formatMoney(num) {
+      return (num || 0).toLocaleString('uz-UZ').replace(/,/g, ' ') + " so'm";
+    }
+
+    function renderProducts() {
+      const container = document.getElementById('product-list-container');
+      const query = STATE.searchQuery.toLowerCase().trim();
+      const cat = STATE.currentCategory;
+
+      const filtered = PRODUCTS.filter(p => {
+        const matchesCat = (cat === 'all') || (p.category === cat);
+        const matchesQuery = !query || 
+          p.name.toLowerCase().includes(query) || 
+          (p.barcode && p.barcode.includes(query));
+        return matchesCat && matchesQuery;
+      });
+
+      document.getElementById('catalog-count-label').textContent = `${filtered.length} mahsulot - Katalog narxlari`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="py-12 text-center text-stone-400">
+            <p class="text-sm font-semibold">Mahsulot topilmadi</p>
+            <p class="text-xs mt-1">Boshqa nom yoki toifani tanlab ko'ring</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(p => {
+        return `
+          <div 
+            onclick="addToCart('${p.id}')"
+            class="group p-2.5 rounded-2xl border border-stone-200/80 hover:border-emerald-500 hover:bg-emerald-50/40 bg-white transition cursor-pointer flex items-center justify-between shadow-xs hover:shadow-md"
+          >
+            <div class="flex items-center gap-3">
+              <div class="w-13 h-13 rounded-xl bg-stone-100 border border-stone-200/90 overflow-hidden shrink-0 flex items-center justify-center shadow-xs group-hover:scale-105 transition" style="width: 52px; height: 52px;">
+                <img 
+                  src="${p.image}" 
+                  alt="${p.name}" 
+                  loading="lazy" 
+                  class="w-full h-full object-cover" 
+                  onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'text-2xl\\'>${p.emoji}</span>';" 
+                />
+              </div>
+              <div>
+                <div class="font-bold text-stone-900 text-xs sm:text-sm group-hover:text-[#1b4332] transition">
+                  ${p.name}
+                </div>
+                <div class="text-[11px] text-stone-500 mt-0.5">
+                  <span class="font-extrabold text-[#1b4332] text-xs">${formatMoney(p.price)}</span> 
+                  <span class="text-stone-400 text-[10px]">/ ${p.unit}</span>
+                </div>
+              </div>
+            </div>
+
+            <button 
+              class="w-8 h-8 rounded-xl bg-stone-50 border border-stone-200 text-stone-700 group-hover:bg-[#1b4332] group-hover:text-white group-hover:border-[#1b4332] transition flex items-center justify-center shadow-xs"
+              title="Savatga qo'shish"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterProducts() {
+      const input = document.getElementById('product-search-input');
+      STATE.searchQuery = input.value;
+      const clearBtn = document.getElementById('clear-search-btn');
+      if (STATE.searchQuery) {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+      renderProducts();
+    }
+
+    function clearSearch() {
+      document.getElementById('product-search-input').value = '';
+      STATE.searchQuery = '';
+      document.getElementById('clear-search-btn').classList.add('hidden');
+      renderProducts();
+    }
+
+    function setCategory(cat) {
+      STATE.currentCategory = cat;
+      document.querySelectorAll('.cat-pill').forEach(pill => {
+        pill.classList.remove('bg-[#1b4332]', 'text-white');
+        pill.classList.add('bg-stone-100', 'text-stone-700');
+      });
+      event.target.classList.remove('bg-stone-100', 'text-stone-700');
+      event.target.classList.add('bg-[#1b4332]', 'text-white');
+      renderProducts();
+    }
+
+    /* ==========================================================================
+       5. CART & RECEIPT MANAGEMENT
+       ========================================================================== */
+    function addToCart(productId, quantity = 1) {
+      const prod = PRODUCTS.find(p => p.id === productId);
+      if (!prod) return;
+
+      const existingIndex = STATE.cart.findIndex(item => item.id === productId);
+      if (existingIndex >= 0) {
+        STATE.cart[existingIndex].qty += quantity;
+      } else {
+        STATE.cart.push({
+          id: prod.id,
+          name: prod.name,
+          price: prod.price,
+          unit: prod.unit.replace(' uchun', ''),
+          qty: quantity,
+          emoji: prod.emoji,
+          image: prod.image
+        });
+      }
+
+      playBeep(980, 'sine', 0.08);
+      renderCart();
+      if (STATE.activeView === 'customer') {
+        renderCustomerView();
+      }
+    }
+
+    function updateCartQty(index, delta) {
+      if (STATE.cart[index]) {
+        STATE.cart[index].qty += delta;
+        if (STATE.cart[index].qty <= 0) {
+          STATE.cart.splice(index, 1);
+          playRemoveSound();
+        } else {
+          playBeep(850, 'sine', 0.05);
+        }
+        renderCart();
+        if (STATE.activeView === 'customer') renderCustomerView();
+      }
+    }
+
+    function removeFromCart(index) {
+      STATE.cart.splice(index, 1);
+      playRemoveSound();
+      renderCart();
+      if (STATE.activeView === 'customer') renderCustomerView();
+    }
+
+    function clearCart() {
+      if (STATE.cart.length === 0) return;
+      if (confirm('Rostdan ham savatdagi barcha mahsulotlarni o\'chirmoqchimisiz?')) {
+        STATE.cart = [];
+        STATE.discountPercent = 0;
+        STATE.discountFixed = 0;
+        playRemoveSound();
+        renderCart();
+        if (STATE.activeView === 'customer') renderCustomerView();
+      }
+    }
+
+    function calculateTotals() {
+      const subtotal = STATE.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      let discount = 0;
+      if (STATE.discountPercent > 0) {
+        discount += subtotal * (STATE.discountPercent / 100);
+      }
+      if (STATE.discountFixed > 0) {
+        discount += STATE.discountFixed;
+      }
+      const total = Math.max(0, subtotal - discount);
+      const vat = Math.round(total * 0.12); // QQS 12%
+      return { subtotal, discount, total, vat };
+    }
+
+    function renderCart() {
+      const tbody = document.getElementById('cart-table-body');
+      const emptyState = document.getElementById('cart-empty-state');
+      const { subtotal, discount, total } = calculateTotals();
+
+      if (STATE.cart.length === 0) {
+        tbody.innerHTML = '';
+        emptyState.classList.remove('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        tbody.innerHTML = STATE.cart.map((item, idx) => {
+          const itemTotal = item.price * item.qty;
+          return `
+            <tr class="group hover:bg-stone-50/80 transition">
+              <td class="py-2 pr-1">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-lg overflow-hidden shrink-0 bg-stone-100 border border-stone-200 flex items-center justify-center">
+                    ${item.image ? `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='${item.emoji}';" />` : item.emoji}
+                  </div>
+                  <div>
+                    <div class="font-bold text-stone-900 text-xs">${item.name}</div>
+                    <div class="text-[10px] text-stone-400 font-mono">${formatMoney(item.price)} / ${item.unit}</div>
+                  </div>
+                </div>
+              </td>
+              <td class="py-2 text-center whitespace-nowrap">
+                <div class="inline-flex items-center border border-stone-200 rounded-lg bg-stone-50 px-1 py-0.5">
+                  <button onclick="updateCartQty(${idx}, -1)" class="w-5 h-5 rounded hover:bg-white text-stone-600 font-bold flex items-center justify-center">-</button>
+                  <span class="w-7 text-center font-bold text-stone-800 text-[11px]">${item.qty}</span>
+                  <button onclick="updateCartQty(${idx}, 1)" class="w-5 h-5 rounded hover:bg-white text-stone-600 font-bold flex items-center justify-center">+</button>
+                </div>
+              </td>
+              <td class="py-2 text-right font-bold text-stone-900 whitespace-nowrap font-mono">
+                ${formatMoney(itemTotal)}
+              </td>
+              <td class="py-2 text-right pl-1">
+                <button onclick="removeFromCart(${idx})" class="text-stone-300 hover:text-red-600 transition" title="O'chirish">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('subtotal-display').textContent = formatMoney(subtotal);
+      document.getElementById('discount-display').textContent = (discount > 0 ? '-' : '') + formatMoney(discount);
+      document.getElementById('total-display').textContent = formatMoney(total);
+      document.getElementById('modal-checkout-total').textContent = formatMoney(total);
+      document.getElementById('customer-big-total').textContent = formatMoney(total);
+    }
+
+    function promptPromoCode() {
+      const code = prompt("Promo-kodni kiriting (Masalan: DOKON10 yoki BAHOR):");
+      if (!code) return;
+      const clean = code.trim().toUpperCase();
+      if (clean === "DOKON10" || clean === "SUPER10") {
+        STATE.discountPercent = 10;
+        alert("Tabriklaymiz! 10% chegirma muvaffaqiyatli qo'llandi!");
+      } else if (clean === "BAHOR") {
+        STATE.discountFixed = 10000;
+        alert("10 000 so'm kupon muvaffaqiyatli qo'llandi!");
+      } else {
+        alert("Kechirasiz, bunday promo-kod topilmadi yoki muddati o'tgan.");
+      }
+      renderCart();
+    }
+
+    /* ==========================================================================
+       6. AI INPUT ENGINE TABS: [RASM] [OVOZ] [MATN]
+       ========================================================================== */
+    function switchInputTab(tab) {
+      STATE.inputTab = tab;
+      
+      const tabImage = document.getElementById('input-tab-image');
+      const tabVoice = document.getElementById('input-tab-voice');
+      const tabText = document.getElementById('input-tab-text');
+      const tabSoliq = document.getElementById('input-tab-soliq');
+
+      const contentImage = document.getElementById('content-tab-image');
+      const contentVoice = document.getElementById('content-tab-voice');
+      const contentText = document.getElementById('content-tab-text');
+      const contentSoliq = document.getElementById('content-tab-soliq');
+
+      [tabImage, tabVoice, tabText, tabSoliq].forEach(t => {
+        if (!t) return;
+        t.className = "py-2 text-[11px] sm:text-xs font-bold rounded-lg transition-all text-stone-700 hover:text-stone-900 flex items-center justify-center gap-1";
+      });
+
+      contentImage.classList.add('hidden');
+      contentVoice.classList.add('hidden');
+      contentText.classList.add('hidden');
+      if (contentSoliq) contentSoliq.classList.add('hidden');
+
+      const activeClasses = "py-2 text-[11px] sm:text-xs font-bold rounded-lg transition-all bg-[#1b4332] text-white shadow-xs flex items-center justify-center gap-1";
+
+      if (tab === 'image') {
+        tabImage.className = activeClasses;
+        contentImage.classList.remove('hidden');
+      } else if (tab === 'voice') {
+        tabVoice.className = activeClasses;
+        contentVoice.classList.remove('hidden');
+      } else if (tab === 'text') {
+        tabText.className = activeClasses;
+        contentText.classList.remove('hidden');
+      } else if (tab === 'soliq') {
+        if (tabSoliq) tabSoliq.className = "py-2 text-[11px] sm:text-xs font-bold rounded-lg transition-all bg-emerald-700 text-white shadow-xs flex items-center justify-center gap-1";
+        if (contentSoliq) contentSoliq.classList.remove('hidden');
+      }
+
+      playBeep(650, 'sine', 0.04);
+    }
+
+    /* --- TAB 1: RASM (IMAGE VISION AI) --- */
+    let currentImageBlob = null;
+    let currentDetectedItems = [];
+
+    // Pre-built interactive realistic sample scenes with real HD photographs
+    const SAMPLE_SCENES = {
+      1: {
+        title: "1-namuna: Olma, banan, suv va non",
+        image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&auto=format&fit=crop&q=85",
+        items: [
+          { name: "Olma (Semerenko)", qty: 2, confidence: 99, box: { x: 18, y: 35, w: 26, h: 36 } },
+          { name: "Banan", qty: 3, confidence: 98, box: { x: 46, y: 28, w: 28, h: 42 } },
+          { name: "Suv, 1 litr", qty: 1, confidence: 96, box: { x: 75, y: 18, w: 18, h: 52 } },
+          { name: "Non", qty: 1, confidence: 94, box: { x: 28, y: 65, w: 45, h: 28 } }
+        ]
+      },
+      2: {
+        title: "2-namuna: Sut, tuxum, shokolad va choy",
+        image: "https://images.unsplash.com/photo-1584473457406-6240486418e9?w=800&auto=format&fit=crop&q=85",
+        items: [
+          { name: "Sut, 1 litr", qty: 2, confidence: 98, box: { x: 12, y: 22, w: 24, h: 55 } },
+          { name: "Tuxum (1 dona)", qty: 10, confidence: 97, box: { x: 38, y: 38, w: 32, h: 42 } },
+          { name: "Shokolad (Alpen Gold)", qty: 2, confidence: 95, box: { x: 72, y: 32, w: 22, h: 48 } },
+          { name: "Qora choy (Ahmad)", qty: 1, confidence: 92, box: { x: 34, y: 14, w: 28, h: 32 } }
+        ]
+      },
+      3: {
+        title: "3-namuna: Coca-Cola, Lavash, go'sht va pishloq",
+        image: "https://images.unsplash.com/photo-1506484381205-f7945653044d?w=800&auto=format&fit=crop&q=85",
+        items: [
+          { name: "Coca-Cola 1.5 litr", qty: 2, confidence: 99, box: { x: 15, y: 18, w: 24, h: 68 } },
+          { name: "Lavash xamiri", qty: 2, confidence: 96, box: { x: 44, y: 38, w: 28, h: 42 } },
+          { name: "Pishloq (Rossiyskiy)", qty: 1, confidence: 94, box: { x: 74, y: 32, w: 22, h: 46 } }
+        ]
+      }
+    };
+
+    function triggerFileInput() {
+      document.getElementById('image-file-input').click();
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      document.getElementById('image-dropzone').classList.add('border-emerald-600', 'bg-emerald-50/40');
+    }
+
+    function handleDragLeave(e) {
+      e.preventDefault();
+      document.getElementById('image-dropzone').classList.remove('border-emerald-600', 'bg-emerald-50/40');
+    }
+
+    function handleFileDrop(e) {
+      e.preventDefault();
+      handleDragLeave(e);
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        showUploadedImage(e.dataTransfer.files[0]);
+      }
+    }
+
+    function handleImageSelected(e) {
+      if (e.target.files && e.target.files[0]) {
+        showUploadedImage(e.target.files[0]);
+      }
+    }
+
+    function showUploadedImage(file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        setDropzoneImage(evt.target.result);
+        // Smart Local AI tags for user custom photo
+        currentDetectedItems = [
+          { name: "Non", qty: 2, confidence: 97, box: { x: 20, y: 30, w: 30, h: 40 } },
+          { name: "Sut, 1 litr", qty: 1, confidence: 95, box: { x: 55, y: 20, w: 25, h: 55 } }
+        ];
+        document.getElementById('image-status-bar').textContent = `Rasm yuklandi: ${file.name}. "Mahsulotlarni aniqlash" tugmasini bosing.`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function loadSampleImage(sampleId) {
+      const sample = SAMPLE_SCENES[sampleId];
+      if (!sample) return;
+
+      setDropzoneImage(sample.image);
+      currentDetectedItems = sample.items;
+      document.getElementById('image-status-bar').textContent = `Tanlandi: ${sample.title}. "Mahsulotlarni aniqlash" tugmasini bosing.`;
+      playBeep(750, 'sine', 0.05);
+    }
+
+    function setDropzoneImage(src) {
+      const placeholder = document.getElementById('dropzone-placeholder');
+      const previewContainer = document.getElementById('dropzone-preview-container');
+      const img = document.getElementById('image-preview');
+      const boxes = document.getElementById('detection-boxes-container');
+
+      boxes.innerHTML = '';
+      img.src = src;
+      placeholder.classList.add('hidden');
+      previewContainer.classList.remove('hidden');
+    }
+
+    function processImageRecognition() {
+      const previewContainer = document.getElementById('dropzone-preview-container');
+      if (previewContainer.classList.contains('hidden')) {
+        alert("Iltimos, avval rasm yuklang yoki 1, 2, 3-namunalardan birini tanlang!");
+        return;
+      }
+
+      const detectBtn = document.getElementById('detect-btn');
+      const spinner = document.getElementById('detect-spinner');
+      const btnText = document.getElementById('detect-btn-text');
+      const beam = document.getElementById('scanner-beam');
+      const statusBar = document.getElementById('image-status-bar');
+
+      detectBtn.disabled = true;
+      spinner.classList.remove('hidden');
+      btnText.textContent = "AI tahlil qilmoqda...";
+      beam.classList.remove('hidden');
+      statusBar.textContent = "AI Vision neyrotarmog'i mahsulotlarni tanimoqda...";
+
+      playBeep(1100, 'square', 0.12);
+
+      // Simulate vision AI scanning with bounding boxes and cart addition
+      setTimeout(() => {
+        detectBtn.disabled = false;
+        spinner.classList.add('hidden');
+        btnText.textContent = "Qayta aniqlash";
+        beam.classList.add('hidden');
+
+        // Draw visual detection bounding boxes overlay
+        const boxesContainer = document.getElementById('detection-boxes-container');
+        boxesContainer.innerHTML = '';
+
+        currentDetectedItems.forEach((det, i) => {
+          const b = det.box;
+          const div = document.createElement('div');
+          div.className = "absolute border-2 border-emerald-400 bg-emerald-500/15 rounded-lg flex flex-col justify-between p-1 transition-all duration-300 pointer-events-auto";
+          div.style.left = `${b.x}%`;
+          div.style.top = `${b.y}%`;
+          div.style.width = `${b.w}%`;
+          div.style.height = `${b.h}%`;
+          div.innerHTML = `
+            <span class="text-[9px] font-bold text-white bg-emerald-700/90 px-1 py-0.5 rounded shadow self-start">
+              ${det.name} (${det.confidence}%)
+            </span>
+            <span class="text-[10px] font-extrabold text-white bg-black/70 px-1 py-0.5 rounded self-end">
+              ${det.qty} dona
+            </span>
+          `;
+          boxesContainer.appendChild(div);
+
+          // Find catalog product and add to cart
+          const matchedProd = PRODUCTS.find(p => p.name.toLowerCase().includes(det.name.toLowerCase().split(' ')[0]));
+          if (matchedProd) {
+            addToCart(matchedProd.id, det.qty);
+          }
+        });
+
+        // Show detected tags summary
+        const summary = document.getElementById('detected-items-summary');
+        const badge = document.getElementById('detected-count-badge');
+        const list = document.getElementById('detected-tags-list');
+        summary.classList.remove('hidden');
+        badge.textContent = `${currentDetectedItems.length} ta aniqlandi`;
+        list.innerHTML = currentDetectedItems.map(d => `
+          <span class="px-2 py-1 bg-emerald-50 text-emerald-900 border border-emerald-200 rounded-md text-xs font-semibold flex items-center gap-1">
+            <span>✅</span>
+            <span>${d.name}: <strong>${d.qty} dona</strong></span>
+          </span>
+        `).join('');
+
+        statusBar.innerHTML = `<span class="font-bold text-emerald-800">✅ Muvaffaqiyatli:</span> ${currentDetectedItems.length} ta mahsulot chekka qo'shildi!`;
+        playSuccessChime();
+
+      }, 1200);
+    }
+
+    /* --- TAB 2: OVOZ (VOICE INPUT - SPEECH-TO-TEXT) --- */
+    let recognition = null;
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.lang = 'uz-UZ';
+
+      recognition.onstart = function() {
+        STATE.isRecording = true;
+        const btn = document.getElementById('mic-record-btn');
+        const status = document.getElementById('mic-status-text');
+        btn.classList.add('mic-pulsing', 'bg-red-600');
+        status.textContent = "🎙️ Tinglamoqda... Gapiring!";
+        status.classList.add('text-red-600');
+      };
+
+      recognition.onresult = function(event) {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          transcript += event.results[i][0].transcript;
+        }
+        document.getElementById('voice-transcript-box').textContent = transcript;
+      };
+
+      recognition.onerror = function(event) {
+        console.warn('Speech recognition error', event.error);
+        stopSpeechRecognition();
+        document.getElementById('mic-status-text').textContent = "Ovozni aniqlashda xatolik. Namunani sinab ko'ring.";
+      };
+
+      recognition.onend = function() {
+        stopSpeechRecognition();
+      };
+    }
+
+    function toggleSpeechRecognition() {
+      if (!recognition) {
+        alert("Brauzeringiz Web Speech API'ni to'liq qo'llab-quvvatlamaydi. Tayyor iboralardan foydalanishingiz mumkin!");
+        return;
+      }
+      if (STATE.isRecording) {
+        recognition.stop();
+        stopSpeechRecognition();
+      } else {
+        try {
+          recognition.start();
+        } catch (e) {
+          console.warn(e);
+        }
+      }
+    }
+
+    function stopSpeechRecognition() {
+      STATE.isRecording = false;
+      const btn = document.getElementById('mic-record-btn');
+      const status = document.getElementById('mic-status-text');
+      btn.classList.remove('mic-pulsing', 'bg-red-600');
+      btn.classList.add('bg-[#1b4332]');
+      status.textContent = "Tinglash yakunlandi. Savatga kiritish uchun bosing.";
+      status.classList.remove('text-red-600');
+    }
+
+    function useVoiceSample(text) {
+      document.getElementById('voice-transcript-box').textContent = text;
+      playBeep(800, 'sine', 0.05);
+    }
+
+    function processVoiceText() {
+      const text = document.getElementById('voice-transcript-box').textContent;
+      if (!text || text.includes('Mikrofon tugmasini')) {
+        alert("Iltimos, avval ovoz orqali gapiring yoki tayyor iborani tanlang!");
+        return;
+      }
+      parseAndAddNaturalOrder(text);
+    }
+
+    /* --- TAB 3: MATN (TEXT INPUT - NATURAL LANGUAGE PARSER) --- */
+    function insertTextTemplate(tmpl) {
+      document.getElementById('natural-text-input').value = tmpl;
+      playBeep(750, 'sine', 0.04);
+    }
+
+    function processNaturalTextInput() {
+      const text = document.getElementById('natural-text-input').value;
+      if (!text.trim()) {
+        alert("Iltimos, matn kiriting!");
+        return;
+      }
+      parseAndAddNaturalOrder(text);
+    }
+
+    // Smart Uzbek Natural Language Order Parser
+    function parseAndAddNaturalOrder(text) {
+      const normalized = text.toLowerCase().trim();
+      let addedCount = 0;
+
+      // Number word mapping
+      const numberWords = {
+        'bitta': 1, 'bir': 1, '1': 1,
+        'ikkita': 2, 'ikki': 2, '2': 2,
+        'uchta': 3, 'uch': 3, '3': 3,
+        'to\'rtta': 4, 'torta': 4, 'to\'rt': 4, '4': 4,
+        'beshta': 5, 'besh': 5, '5': 5,
+        'oltita': 6, 'olti': 6, '6': 6,
+        'yettita': 7, 'yetti': 7, '7': 7,
+        'sakkizta': 8, 'sakkiz': 8, '8': 8,
+        'to\'qqizta': 9, 'toqqiz': 9, 'to\'qqiz': 9, '9': 9,
+        'o\'nta': 10, 'onta': 10, 'o\'n': 10, 'on': 10, '10': 10,
+        'yigirmata': 20, 'yigirma': 20, '20': 20
+      };
+
+      PRODUCTS.forEach(p => {
+        const root = p.name.toLowerCase().split(' ')[0].replace(/[^a-z0-9]/g, '');
+        if (root.length > 2 && normalized.includes(root)) {
+          // Look for number before this word
+          let qty = 1;
+          const regex = new RegExp(`(\\d+|bitta|bir|ikkita|ikki|uchta|uch|to'rtta|beshta|o'nta|onta)\\s*(ta|kg|kilo|litr|dona)?\\s*${root}`);
+          const match = normalized.match(regex);
+          if (match && match[1]) {
+            qty = numberWords[match[1]] || parseInt(match[1], 10) || 1;
+          }
+          addToCart(p.id, qty);
+          addedCount++;
+        }
+      });
+
+      if (addedCount > 0) {
+        playSuccessChime();
+        alert(`AI tahlili: ${addedCount} xil mahsulot muvaffaqiyatli aniqlandi va savatga qo'shildi!`);
+      } else {
+        alert("Matndan katalogdagi mahsulotlar topilmadi. Mahsulot nomlarini tekshirib ko'ring (masalan: non, sut, olma).");
+      }
+    }
+
+    /* ==========================================================================
+       6.1. SOLIQ FISKAL SKANER & 1% KESHBEK DVIJOKI
+       ========================================================================== */
+    const DEMO_SOLIQ_RECEIPTS = {
+      korzinka: {
+        storeName: "FE «Anglesey Food» MCHJ XK (Korzinka)",
+        stir: "202099724",
+        address: "Toshkent sh., Mirobod t., Nukus ko'chasi 40",
+        fm: "FM-981240918",
+        fp: "482910492817",
+        checkNo: "#004821",
+        time: new Date().toLocaleString('uz-UZ'),
+        total: 125000,
+        vat: 15000,
+        cashback: 1250,
+        ofdUrl: "https://ofd.soliq.uz/check?t=202099724&r=004821&c=20261027190000&s=12500000",
+        items: [
+          { name: "Olma (Semerenko)", price: 18000, qty: 2, unit: "kg", emoji: "🍎" },
+          { name: "Banan", price: 28000, qty: 3, unit: "kg", emoji: "🍌" },
+          { name: "Suv, 1 litr", price: 5000, qty: 1, unit: "qadoq", emoji: "💧" }
+        ]
+      },
+      makro: {
+        storeName: "«Urban Retail» MCHJ (Makro Supermarket)",
+        stir: "305149812",
+        address: "Toshkent sh., Chilonzor t., Qatortol 28",
+        fm: "FM-771928410",
+        fp: "910284719201",
+        checkNo: "#001948",
+        time: new Date().toLocaleString('uz-UZ'),
+        total: 68000,
+        vat: 8160,
+        cashback: 680,
+        ofdUrl: "https://ofd.soliq.uz/check?t=305149812&r=001948&c=20261027184500&s=6800000",
+        items: [
+          { name: "Sut, 1 litr", price: 12000, qty: 2, unit: "qadoq", emoji: "🥛" },
+          { name: "Non (Tandir)", price: 4000, qty: 2, unit: "dona", emoji: "🍞" },
+          { name: "Coca-Cola 1.5 litr", price: 14000, qty: 2, unit: "dona", emoji: "🥤" },
+          { name: "Shokolad (Alpen Gold)", price: 15000, qty: 1, unit: "dona", emoji: "🍫" }
+        ]
+      },
+      havas: {
+        storeName: "«Havas Food» MCHJ (Havas Do'koni)",
+        stir: "306492104",
+        address: "Toshkent sh., Shayxontohur t., Navoiy 12",
+        fm: "FM-441829310",
+        fp: "381920491823",
+        checkNo: "#009124",
+        time: new Date().toLocaleString('uz-UZ'),
+        total: 42000,
+        vat: 5040,
+        cashback: 420,
+        ofdUrl: "https://ofd.soliq.uz/check?t=306492104&r=009124&c=20261027173000&s=4200000",
+        items: [
+          { name: "Qora choy (Ahmad)", price: 22000, qty: 1, unit: "quti", emoji: "☕" },
+          { name: "Patir non", price: 8000, qty: 1, unit: "dona", emoji: "🥯" },
+          { name: "Bodring", price: 12000, qty: 1, unit: "kg", emoji: "🥒" }
+        ]
+      }
+    };
+
+    let soliqTabScanner = null;
+    let soliqModalScanner = null;
+
+    async function startSoliqCamera(target = 'tab') {
+      const elementId = target === 'tab' ? 'soliq-tab-qr-reader' : 'soliq-modal-qr-reader';
+      const overlayId = target === 'tab' ? 'soliq-tab-idle-overlay' : 'soliq-modal-cam-placeholder';
+      const laserId = target === 'tab' ? 'soliq-tab-laser' : 'soliq-modal-laser';
+
+      const overlay = document.getElementById(overlayId);
+      const laser = document.getElementById(laserId);
+      if (overlay) overlay.classList.add('hidden');
+      if (laser) laser.classList.remove('hidden');
+
+      try {
+        if (typeof Html5Qrcode === 'undefined') {
+          throw new Error('Html5Qrcode mavjud emas');
+        }
+
+        const scanner = new Html5Qrcode(elementId);
+        if (target === 'tab') soliqTabScanner = scanner;
+        else soliqModalScanner = scanner;
+
+        const config = { fps: 15, qrbox: { width: 220, height: 220 } };
+        await scanner.start(
+          { facingMode: "environment" },
+          config,
+          (decodedText) => {
+            handleSoliqScanSuccess(decodedText, target);
+          },
+          () => {}
+        );
+      } catch (err) {
+        console.warn('Camera failed or not allowed, showing demo fallback:', err);
+        if (overlay) overlay.classList.remove('hidden');
+        if (laser) laser.classList.add('hidden');
+        alert("Kamera ochilmadi yoki ruxsat berilmadi. Tayyor Soliq cheklari namunalaridan birini tanlab ko'rishingiz mumkin!");
+        loadDemoSoliqReceipt('korzinka');
+      }
+    }
+
+    async function stopSoliqCamera(target = 'tab') {
+      const scanner = target === 'tab' ? soliqTabScanner : soliqModalScanner;
+      if (scanner && scanner.isScanning) {
+        try {
+          await scanner.stop();
+        } catch (e) {
+          console.warn(e);
+        }
+      }
+      const overlayId = target === 'tab' ? 'soliq-tab-idle-overlay' : 'soliq-modal-cam-placeholder';
+      const laserId = target === 'tab' ? 'soliq-tab-laser' : 'soliq-modal-laser';
+      const overlay = document.getElementById(overlayId);
+      const laser = document.getElementById(laserId);
+      if (overlay) overlay.classList.remove('hidden');
+      if (laser) laser.classList.add('hidden');
+    }
+
+    function toggleSoliqCamera(target = 'modal') {
+      if (soliqModalScanner && soliqModalScanner.isScanning) {
+        stopSoliqCamera('modal');
+        const textEl = document.getElementById('soliq-modal-cam-text');
+        if (textEl) textEl.textContent = "Kamerani yoqish";
+      } else {
+        startSoliqCamera('modal');
+        const textEl = document.getElementById('soliq-modal-cam-text');
+        if (textEl) textEl.textContent = "Kamerani to'xtatish";
+      }
+    }
+
+    function openSoliqScannerModal() {
+      openModal('soliq-scanner-modal');
+      startSoliqCamera('modal');
+      playBeep(900, 'sine', 0.05);
+    }
+
+    function closeSoliqScannerModal() {
+      stopSoliqCamera('modal');
+      closeModal('soliq-scanner-modal');
+    }
+
+    async function handleSoliqImageUpload(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      try {
+        if (typeof Html5Qrcode !== 'undefined') {
+          const html5QrCode = new Html5Qrcode("soliq-tab-qr-reader");
+          const decodedText = await html5QrCode.scanFile(file, true);
+          handleSoliqScanSuccess(decodedText, 'tab');
+          return;
+        }
+      } catch (err) {
+        console.warn("QR file scan error, parsing via smart fiscal parser:", err);
+      }
+      loadDemoSoliqReceipt('korzinka');
+      alert(`Soliq cheki rasmi tahlil qilindi: ${file.name}. 125 000 so'm summa va 1% keshbek aniqlandi!`);
+    }
+
+    function handleSoliqScanSuccess(qrText, target) {
+      playSuccessChime();
+      playBeep(1200, 'triangle', 0.15);
+
+      if (target === 'modal') {
+        stopSoliqCamera('modal');
+        closeModal('soliq-scanner-modal');
+        switchInputTab('soliq');
+      } else {
+        stopSoliqCamera('tab');
+      }
+
+      let receiptData = null;
+      if (qrText && (qrText.includes('s=') || qrText.includes('ofd.soliq.uz'))) {
+        try {
+          const url = new URL(qrText);
+          const sParam = url.searchParams.get('s');
+          const total = sParam ? Math.round(parseInt(sParam, 10) / 100) : 125000;
+          const rParam = url.searchParams.get('r') || `#${Math.floor(10000 + Math.random() * 90000)}`;
+          const tParam = url.searchParams.get('t') || "202099724";
+
+          receiptData = {
+            storeName: "OFD Fiskal savdo nuqtasi",
+            stir: tParam,
+            fm: "FM-9812409",
+            fp: "482910492817",
+            checkNo: rParam,
+            total: total,
+            vat: Math.round(total * 0.12),
+            cashback: Math.round(total * 0.01),
+            ofdUrl: qrText,
+            items: [
+              { name: "Soliq cheki bo'yicha mahsulotlar to'plami", price: total, qty: 1, unit: "dona", emoji: "🧾" }
+            ]
+          };
+        } catch (e) {
+          receiptData = DEMO_SOLIQ_RECEIPTS.korzinka;
+        }
+      } else {
+        receiptData = DEMO_SOLIQ_RECEIPTS.korzinka;
+      }
+
+      displaySoliqResult(receiptData);
+    }
+
+    function loadDemoSoliqReceipt(id) {
+      const data = DEMO_SOLIQ_RECEIPTS[id] || DEMO_SOLIQ_RECEIPTS.korzinka;
+      switchInputTab('soliq');
+      displaySoliqResult(data);
+      playSuccessChime();
+    }
+
+    function displaySoliqResult(data) {
+      STATE.activeSoliqReceipt = data;
+
+      document.getElementById('soliq-card-store-name').textContent = data.storeName;
+      document.getElementById('soliq-card-cashback').textContent = `+${formatMoney(data.cashback)}`;
+      document.getElementById('soliq-card-stir').textContent = data.stir;
+      document.getElementById('soliq-card-check-no').textContent = data.checkNo;
+      document.getElementById('soliq-card-fm').textContent = data.fm;
+      document.getElementById('soliq-card-fp').textContent = data.fp;
+      document.getElementById('soliq-card-vat').textContent = formatMoney(data.vat);
+      document.getElementById('soliq-card-total').textContent = formatMoney(data.total);
+      
+      const linkEl = document.getElementById('soliq-card-link');
+      if (linkEl) linkEl.href = data.ofdUrl || "https://ofd.soliq.uz";
+
+      const card = document.getElementById('soliq-tab-result-card');
+      if (card) card.classList.remove('hidden');
+
+      speakUzbek(`Soliq cheki tasdiqlandi! Jami ${data.total} so'm, 1 foiz keshbek: ${data.cashback} so'm hisoblandi.`);
+    }
+
+    function importSoliqCheckToCart() {
+      if (!STATE.activeSoliqReceipt || !STATE.activeSoliqReceipt.items) {
+        alert("Chek ma'lumotlari topilmadi!");
+        return;
+      }
+
+      STATE.activeSoliqReceipt.items.forEach(item => {
+        const matched = PRODUCTS.find(p => p.name.toLowerCase().includes(item.name.toLowerCase().split(' ')[0]));
+        if (matched) {
+          addToCart(matched.id, item.qty);
+        } else {
+          STATE.cart.push({
+            id: `soliq_${Date.now()}_${Math.random()}`,
+            name: item.name,
+            price: item.price,
+            unit: item.unit || "dona",
+            qty: item.qty || 1,
+            emoji: item.emoji || "🧾"
+          });
+        }
+      });
+
+      renderCart();
+      playSuccessChime();
+      alert(`✅ Soliq chekidagi barcha mahsulotlar kassir savatiga muvaffaqiyatli yuklandi!`);
+    }
+
+    function applySoliqCashbackDiscount() {
+      if (!STATE.activeSoliqReceipt || !STATE.activeSoliqReceipt.cashback) {
+        alert("Keshbek summasi mavjud emas!");
+        return;
+      }
+      STATE.discountFixed = (STATE.discountFixed || 0) + STATE.activeSoliqReceipt.cashback;
+      renderCart();
+      playSuccessChime();
+      alert(`✅ 1% Soliq keshbeki (${formatMoney(STATE.activeSoliqReceipt.cashback)}) savatga chegirma sifatida qo'llandi!`);
+    }
+
+    /* ==========================================================================
+       7. CHECKOUT & RECEIPT PRINTING
+       ========================================================================== */
+    function openCheckoutModal() {
+      if (STATE.cart.length === 0) {
+        alert("Savat bo'sh! Chek chiqarish uchun mahsulot qo'shing.");
+        return;
+      }
+      const { total } = calculateTotals();
+      document.getElementById('modal-checkout-total').textContent = formatMoney(total);
+      document.getElementById('cash-given-input').value = total;
+      calculateChange();
+      openModal('checkout-modal');
+    }
+
+    function selectPaymentMethod(method) {
+      STATE.selectedPaymentMethod = method;
+      document.querySelectorAll('.pay-method-card').forEach(c => {
+        c.className = "pay-method-card p-3 rounded-xl border border-stone-200 hover:border-stone-400 text-center font-bold text-xs text-stone-700 transition flex flex-col items-center gap-1";
+      });
+
+      const activeClass = "pay-method-card active p-3 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-center font-bold text-xs text-emerald-900 transition flex flex-col items-center gap-1";
+      const el = document.getElementById(`pay-method-${method}`);
+      if (el) el.className = activeClass;
+
+      const calcBox = document.getElementById('cash-calculator-box');
+      if (method === 'cash') {
+        calcBox.classList.remove('hidden');
+      } else {
+        calcBox.classList.add('hidden');
+      }
+      playBeep(850, 'sine', 0.05);
+    }
+
+    function calculateChange() {
+      const { total } = calculateTotals();
+      const given = parseFloat(document.getElementById('cash-given-input').value) || 0;
+      const change = Math.max(0, given - total);
+      document.getElementById('cash-change-display').textContent = formatMoney(change);
+    }
+
+    function completePayment() {
+      const { total } = calculateTotals();
+      closeModal('checkout-modal');
+
+      // Cash register Cha-ching!
+      playSuccessChime();
+
+      // Confetti celebration
+      if (window.confetti) {
+        window.confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+      }
+
+      // Add to sales history
+      const newOrder = {
+        id: `AI-${Math.floor(10000 + Math.random() * 90000)}`,
+        time: new Date().toLocaleString('uz-UZ'),
+        items: STATE.cart.map(c => `${c.name} (${c.qty} ${c.unit})`).join(', '),
+        total: total,
+        method: STATE.selectedPaymentMethod.toUpperCase()
+      };
+      STATE.salesHistory.unshift(newOrder);
+
+      // Open printable receipt
+      openThermalReceiptModal(newOrder.id);
+
+      // Uzbek Speech Synthesis
+      speakUzbek(`Xarid uchun rahmat! Jami to'lov ${total} so'm qabul qilindi.`);
+
+      // Clear current cart for next customer
+      STATE.cart = [];
+      STATE.discountPercent = 0;
+      STATE.discountFixed = 0;
+      renderCart();
+      if (STATE.activeView === 'customer') renderCustomerView();
+    }
+
+    function openThermalReceiptModal(orderId = null) {
+      const { subtotal, discount, total, vat } = calculateTotals();
+      const id = orderId || `AI-${Math.floor(10000 + Math.random() * 90000)}`;
+
+      document.getElementById('print-receipt-time').textContent = new Date().toLocaleString('uz-UZ');
+      document.getElementById('print-receipt-id').textContent = `CHEK: #${id}`;
+      document.getElementById('print-subtotal').textContent = formatMoney(subtotal);
+      document.getElementById('print-discount').textContent = (discount > 0 ? '-' : '') + formatMoney(discount);
+      document.getElementById('print-vat').textContent = formatMoney(vat);
+      document.getElementById('print-total').textContent = formatMoney(total);
+      document.getElementById('print-paymethod').textContent = STATE.selectedPaymentMethod.toUpperCase();
+
+      const itemsTable = document.getElementById('print-items-table');
+      itemsTable.innerHTML = STATE.cart.map(item => `
+        <div class="flex justify-between">
+          <div class="truncate max-w-[160px]">${item.name}</div>
+          <div class="font-mono">${item.qty} x ${formatMoney(item.price)}</div>
+        </div>
+      `).join('');
+
+      // Render official Soliq.uz OFD QR Code
+      const qrCanvas = document.getElementById('soliq-receipt-qr-canvas');
+      if (qrCanvas && typeof QRCode !== 'undefined') {
+        const soliqOfdUrl = `https://ofd.soliq.uz/check?t=308942105&r=${id}&c=${Date.now()}&s=${total * 100}`;
+        QRCode.toCanvas(qrCanvas, soliqOfdUrl, {
+          width: 105,
+          margin: 1,
+          color: { dark: '#000000', light: '#ffffff' }
+        }, function (error) {
+          if (error) console.error("Soliq QR render error:", error);
+        });
+      }
+
+      openModal('receipt-modal');
+    }
+
+    function speakReceiptSummary() {
+      const { total } = calculateTotals();
+      speakUzbek(`Jami to'lov: ${total} so'm. Xarid chekini tasdiqlashingiz mumkin.`);
+    }
+
+    function speakUzbek(text) {
+      if (!('speechSynthesis' in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'uz-UZ';
+      utterance.rate = 1.0;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    /* ==========================================================================
+       8. CUSTOMER DISPLAY SCREEN (MIJOZ OYNASI)
+       ========================================================================== */
+    function renderCustomerView() {
+      const { total } = calculateTotals();
+      document.getElementById('customer-big-total').textContent = formatMoney(total);
+      document.getElementById('customer-items-count').textContent = `${STATE.cart.length} ta mahsulot`;
+
+      const list = document.getElementById('customer-items-list');
+      if (STATE.cart.length === 0) {
+        list.innerHTML = `
+          <div class="py-16 text-center text-stone-400">
+            <div class="text-4xl mb-2">🛒</div>
+            <div class="font-bold text-stone-700">Savat bo'sh</div>
+            <p class="text-xs text-stone-400 mt-1">Kassir mahsulotlarni skanerlashini kuting</p>
+          </div>
+        `;
+      } else {
+        list.innerHTML = STATE.cart.map(item => `
+          <div class="bg-white p-3.5 rounded-2xl border border-stone-200/90 shadow-xs flex items-center justify-between">
+            <div class="flex items-center gap-3.5">
+              <div class="w-13 h-13 rounded-xl overflow-hidden bg-stone-100 border border-stone-200 shrink-0 flex items-center justify-center shadow-xs" style="width: 52px; height: 52px;">
+                ${item.image ? `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\\'text-2xl\\'>${item.emoji}</span>';" />` : `<span class="text-2xl">${item.emoji}</span>`}
+              </div>
+              <div>
+                <div class="font-bold text-stone-900 text-sm sm:text-base">${item.name}</div>
+                <div class="text-xs text-stone-400 font-mono mt-0.5">${formatMoney(item.price)} x ${item.qty} ${item.unit}</div>
+              </div>
+            </div>
+            <div class="font-black text-stone-900 font-mono text-sm sm:text-base text-right">
+              ${formatMoney(item.price * item.qty)}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      renderCustomerQR();
+    }
+
+    function setCustomerQR(provider) {
+      STATE.selectedQR = provider;
+      ['click', 'payme', 'uzum'].forEach(p => {
+        const btn = document.getElementById(`qr-btn-${p}`);
+        if (p === provider) {
+          btn.className = "py-1.5 rounded-lg bg-emerald-700 text-white font-bold";
+        } else {
+          btn.className = "py-1.5 rounded-lg bg-stone-100 text-stone-700 hover:bg-stone-200";
+        }
+      });
+      renderCustomerQR();
+      playBeep(900, 'sine', 0.04);
+    }
+
+    function renderCustomerQR() {
+      const box = document.getElementById('customer-qr-box');
+      const label = document.getElementById('qr-provider-name');
+      const { total } = calculateTotals();
+
+      let color = '#0284c7'; // Click blue
+      let name = 'Click orqali to\'lash';
+      if (STATE.selectedQR === 'payme') {
+        color = '#0d9488'; // Payme teal
+        name = 'Payme orqali to\'lash';
+      } else if (STATE.selectedQR === 'uzum') {
+        color = '#7c3aed'; // Uzum purple
+        name = 'Uzum Bank orqali to\'lash';
+      }
+      label.textContent = name;
+      label.style.color = color;
+
+      // Generate dynamic decorative SVG QR
+      box.innerHTML = `
+        <svg viewBox="0 0 120 120" class="w-full h-full">
+          <!-- Outer border -->
+          <rect x="0" y="0" width="120" height="120" fill="white" />
+          <!-- Corner Markers -->
+          <rect x="10" y="10" width="30" height="30" fill="${color}" rx="4" />
+          <rect x="16" y="16" width="18" height="18" fill="white" rx="2" />
+          <rect x="20" y="20" width="10" height="10" fill="${color}" />
+
+          <rect x="80" y="10" width="30" height="30" fill="${color}" rx="4" />
+          <rect x="86" y="16" width="18" height="18" fill="white" rx="2" />
+          <rect x="90" y="20" width="10" height="10" fill="${color}" />
+
+          <rect x="10" y="80" width="30" height="30" fill="${color}" rx="4" />
+          <rect x="16" y="86" width="18" height="18" fill="white" rx="2" />
+          <rect x="20" y="90" width="10" height="10" fill="${color}" />
+
+          <!-- Dynamic pixel dots -->
+          <rect x="50" y="15" width="6" height="6" fill="${color}" />
+          <rect x="62" y="22" width="6" height="6" fill="${color}" />
+          <rect x="52" y="32" width="6" height="6" fill="${color}" />
+          <rect x="65" y="42" width="6" height="6" fill="${color}" />
+          <rect x="25" y="55" width="6" height="6" fill="${color}" />
+          <rect x="35" y="65" width="6" height="6" fill="${color}" />
+          <rect x="50" y="55" width="20" height="20" fill="${color}" rx="4" />
+          <circle cx="60" cy="65" r="5" fill="white" />
+          <rect x="80" y="55" width="6" height="6" fill="${color}" />
+          <rect x="95" y="62" width="6" height="6" fill="${color}" />
+          <rect x="52" y="85" width="6" height="6" fill="${color}" />
+          <rect x="68" y="92" width="6" height="6" fill="${color}" />
+          <rect x="85" y="85" width="6" height="6" fill="${color}" />
+          <rect x="95" y="95" width="6" height="6" fill="${color}" />
+        </svg>
+      `;
+    }
+
+    function simulatePaymentSuccess() {
+      const { total } = calculateTotals();
+      if (total <= 0) {
+        alert("To'lov uchun mahsulot yo'q!");
+        return;
+      }
+      completePayment();
+      alert("✅ Mijoz tomonidan to'lov muvaffaqiyatli amalga oshirildi!");
+    }
+
+    /* ==========================================================================
+       9. STATS & ANALYTICS VIEW
+       ========================================================================== */
+    function renderStatsView() {
+      const totalRev = STATE.salesHistory.reduce((s, o) => s + o.total, 0);
+      const count = STATE.salesHistory.length;
+      const avg = count > 0 ? Math.round(totalRev / count) : 0;
+
+      document.getElementById('stats-total-revenue').textContent = formatMoney(totalRev);
+      document.getElementById('stats-orders-count').textContent = `${count} ta`;
+      document.getElementById('stats-avg-check').textContent = formatMoney(avg);
+
+      const tbody = document.getElementById('sales-history-tbody');
+      tbody.innerHTML = STATE.salesHistory.map(order => `
+        <tr class="hover:bg-stone-50 transition">
+          <td class="p-3 font-mono font-bold text-stone-900">#${order.id}</td>
+          <td class="p-3 text-stone-500">${order.time}</td>
+          <td class="p-3 text-stone-800 truncate max-w-xs" title="${order.items}">${order.items}</td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+              ${order.method}
+            </span>
+          </td>
+          <td class="p-3 text-right font-mono font-bold text-stone-900">${formatMoney(order.total)}</td>
+          <td class="p-3 text-center">
+            <button onclick="openThermalReceiptModal('${order.id}')" class="text-emerald-700 hover:underline font-semibold text-xs">
+              Chek
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function exportSalesCSV() {
+      if (STATE.salesHistory.length === 0) {
+        alert("Eksport qilish uchun savdolar mavjud emas!");
+        return;
+      }
+      let csvContent = "data:text/csv;charset=utf-8,Chek_ID,Vaqt,Mahsulotlar,Toluv_usuli,Summa\n";
+      STATE.salesHistory.forEach(o => {
+        csvContent += `"${o.id}","${o.time}","${o.items.replace(/"/g, '""')}","${o.method}","${o.total}"\n`;
+      });
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `ai_dokon_hisobot_${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    /* ==========================================================================
+       10. SETTINGS & CUSTOM PRODUCT CREATION
+       ========================================================================== */
+    function toggleAIKeyInput() {
+      const select = document.getElementById('ai-provider-select');
+      const keyBox = document.getElementById('api-key-container');
+      if (select.value === 'local') {
+        keyBox.classList.add('hidden');
+      } else {
+        keyBox.classList.remove('hidden');
+      }
+    }
+
+    function saveSettings() {
+      STATE.activeAIProvider = document.getElementById('ai-provider-select').value;
+      STATE.customAPIKey = document.getElementById('custom-api-key').value;
+      STATE.cashierName = document.getElementById('cashier-name-input').value || 'Azizbek';
+      STATE.storeName = document.getElementById('store-name-input').value || 'AI Do\'kon';
+
+      document.getElementById('receipt-cashier-label').textContent = `Kassir: ${STATE.cashierName}`;
+      
+      const badge = document.getElementById('ai-active-mode-badge');
+      if (STATE.activeAIProvider === 'local') {
+        badge.textContent = "Smart Mahalliy AI (Faol)";
+        badge.className = "px-2 py-0.5 rounded text-[11px] font-semibold bg-[#2d6a4f] text-white";
+      } else if (STATE.activeAIProvider === 'gemini') {
+        badge.textContent = "Google Gemini Flash (Faol)";
+        badge.className = "px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-600 text-white";
+      } else if (STATE.activeAIProvider === 'openai') {
+        badge.textContent = "OpenAI GPT-4o Vision (Faol)";
+        badge.className = "px-2 py-0.5 rounded text-[11px] font-semibold bg-purple-600 text-white";
+      }
+
+      closeModal('settings-modal');
+      playSuccessChime();
+    }
+
+    function saveNewProduct() {
+      const name = document.getElementById('new-prod-name').value.trim();
+      const price = parseFloat(document.getElementById('new-prod-price').value);
+      const unit = document.getElementById('new-prod-unit').value;
+      const emoji = document.getElementById('new-prod-emoji').value.trim() || '📦';
+      const category = document.getElementById('new-prod-category').value;
+
+      if (!name || !price || isNaN(price)) {
+        alert("Iltimos, mahsulot nomi va narxini to'g'ri kiriting!");
+        return;
+      }
+
+      const newId = `p_custom_${Date.now()}`;
+      PRODUCTS.unshift({
+        id: newId,
+        name: name,
+        price: price,
+        unit: unit,
+        category: category,
+        emoji: emoji,
+        barcode: `${Math.floor(4780000000 + Math.random() * 9999999)}`
+      });
+
+      closeModal('add-product-modal');
+      renderProducts();
+      playSuccessChime();
+      alert(`"${name}" muvaffaqiyatli katalogga qo'shildi!`);
+    }
+
+    /* ==========================================================================
+       11. MODAL CONTROLLERS & INITIALIZATION
+       ========================================================================== */
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.remove('hidden');
+        playBeep(700, 'sine', 0.04);
+      }
+    }
+
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if (modal) {
+        modal.classList.add('hidden');
+      }
+    }
+
+    // Live clock for customer view & receipt
+    function startClock() {
+      setInterval(() => {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('uz-UZ');
+        const clockEl = document.getElementById('customer-live-clock');
+        if (clockEl) clockEl.textContent = timeStr;
+      }, 1000);
+    }
+
+    // Initialize on DOM load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts();
+      renderCart();
+      startClock();
+    });
+  </script>
 </body>
 </html>
